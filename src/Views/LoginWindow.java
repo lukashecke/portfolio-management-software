@@ -4,13 +4,24 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+ * Fenster zum einloggen eines Benutzers auf die Datenbank.
+ * @author  Lukas Hecke
+ * @author  Namandeep Singh
+ */
 public class LoginWindow extends JFrame {
 
+    /**
+     * Startpunkt des Programms.
+     * @param args Übergabeparameter über die Kommandozeile (unbenutzt)
+     */
     public static void main(String[] args) {
         new LoginWindow();
     }
 
-    // Controls
+    // Controls deklarieren
+    private Container container;
+
     private JPanel loginPanel;
     private JTextField inputUserField;
     private JTextField inputPasswordField;
@@ -18,12 +29,27 @@ public class LoginWindow extends JFrame {
 
     private JLabel logo;
 
+    /**
+     * Erzeugt die Komponenten für das LoginWindow.
+     * @author  Lukas Hecke
+     * @author  Namandeep Singh
+     */
     public LoginWindow() {
         super();
-        setTitle("StonksX");
+        setComponents();
+        addListener();
+        showWindow("StonksX", 500, 300);
+    }
 
+    /**
+     * Setzt alle anzuzeuigenden Komponenten im Fenster.
+     * @author  Lukas Hecke
+     * @author  Namandeep Singh
+     *
+     */
+    private void setComponents() {
         // Container
-        Container container = getContentPane();
+        container = getContentPane();
         container.setLayout(new GridLayout(1,2));
 
         // Controls
@@ -36,7 +62,7 @@ public class LoginWindow extends JFrame {
         logo = new JLabel("Hier später Logo");
 
         GridBagConstraints c = new GridBagConstraints();
-        c.gridwidth = java.awt.GridBagConstraints.RELATIVE;
+        c.gridwidth = GridBagConstraints.RELATIVE;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 1.0;
 
@@ -52,21 +78,18 @@ public class LoginWindow extends JFrame {
         c.gridy = 3;
         loginPanel.add(loginButton, c);
 
-        // Zusammenbau der Seite
+        // Zusammenbauen der Seite
         container.add(loginPanel, 0);
         logo.setHorizontalAlignment(SwingConstants.CENTER);
         container.add(logo, 1);
-
-        // Listener
-        addListener(loginButton);
-
-        // Anzeigen
-        pack();
-        setSize(500, 300);
-        setVisible(true);
     }
 
-    private void addListener(JButton loginButton) {
+    /**
+     * Registriert alle benötigten Listener für das Fenster.
+     * @author Lukas Hecke
+     */
+    private void addListener() {
+        // Schließen des Fenster ruft exit() auf
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -84,6 +107,21 @@ public class LoginWindow extends JFrame {
         });
     }
 
+    /** Öffnet das Fenster. Komponenten und Listener müssen bereits initialisiert sein.
+     * @author  Lukas Hecke
+     * @author  Namandeep Singh
+     */
+    private void showWindow(String title, int width, int height) {
+        setTitle(title);
+        pack();
+        setSize(width, height);
+        setVisible(true);
+    }
+
+    /**
+     * Kontrolliertes Schließen des Programms.
+     * @author Lukas Hecke
+     */
     private void exit() {
         //listModel.save();
         System.exit(0);
