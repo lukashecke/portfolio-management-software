@@ -1,19 +1,23 @@
 package Views;
 
+import Business.DBConnection;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.sql.SQLException;
 
 /**
- * Fenster zum einloggen eines Benutzers auf die Datenbank.
- * @author  Lukas Hecke
- * @author  Namandeep Singh
+ * Fenster zum Einloggen eines Benutzers auf der Datenbank.
  */
-public class LoginWindow extends JFrame {
+public class LoginWindow extends BaseWindow {
 
     /**
      * Startpunkt des Programms.
      * @param args Übergabeparameter über die Kommandozeile (unbenutzt)
+     * @author Lukas Hecke
+     * @author Namandeep Singh
      */
     public static void main(String[] args) {
         new LoginWindow();
@@ -24,7 +28,7 @@ public class LoginWindow extends JFrame {
 
     private JPanel loginPanel;
     private JTextField inputUserField;
-    private JTextField inputPasswordField;
+    private JPasswordField inputPasswordField;
     private JButton loginButton;
 
     private JLabel logo;
@@ -38,11 +42,11 @@ public class LoginWindow extends JFrame {
         super();
         setComponents();
         addListener();
-        showWindow("StonksX", 500, 300);
+        showWindow("Firestocks", 500, 300);
     }
 
     /**
-     * Setzt alle anzuzeuigenden Komponenten im Fenster.
+     * Setzt alle anzuzeigenden Komponenten im Fenster.
      * @author  Lukas Hecke
      * @author  Namandeep Singh
      *
@@ -56,7 +60,7 @@ public class LoginWindow extends JFrame {
         loginPanel = new JPanel();
         loginPanel.setLayout(new GridBagLayout());
         inputUserField = new JTextField();
-        inputPasswordField = new JTextField();
+        inputPasswordField = new JPasswordField();
         loginButton = new JButton("Login");
 
         logo = new JLabel("Hier später Logo");
@@ -78,6 +82,8 @@ public class LoginWindow extends JFrame {
         c.gridy = 3;
         loginPanel.add(loginButton, c);
 
+        inputUserField.requestFocus();
+
         // Zusammenbauen der Seite
         container.add(loginPanel, 0);
         logo.setHorizontalAlignment(SwingConstants.CENTER);
@@ -89,41 +95,49 @@ public class LoginWindow extends JFrame {
      * @author Lukas Hecke
      */
     private void addListener() {
-        // Schließen des Fenster ruft exit() auf
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                exit();
-            }
-        });
-
-        loginButton.addKeyListener(new KeyAdapter() {
+        inputUserField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    // TODO: Login Validierung und DB-Anmeldung anstoßen in Controller
+                    inputPasswordField.requestFocus();
                 }
             }
         });
-    }
 
-    /** Öffnet das Fenster. Komponenten und Listener müssen bereits initialisiert sein.
-     * @author  Lukas Hecke
-     * @author  Namandeep Singh
-     */
-    private void showWindow(String title, int width, int height) {
-        setTitle(title);
-        pack();
-        setSize(width, height);
-        setVisible(true);
+        inputPasswordField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    loginUser(inputUserField.getText(), new String(inputPasswordField.getPassword()));
+                }
+            }
+        });
+
+        loginButton.addActionListener((e) -> loginUser(inputUserField.getText(), new String (inputPasswordField.getPassword())));
     }
 
     /**
-     * Kontrolliertes Schließen des Programms.
+     * Versucht mit den übergebenen Parametern eine Verbindung mit der Datenbank herzustellen.
+     * @param user Benutzer
+     * @param password Passwort
      * @author Lukas Hecke
      */
-    private void exit() {
-        //listModel.save();
-        System.exit(0);
+    private void loginUser(String user, String password) {
+        try {
+            DBConnection.getInstance().setConnection(user, password);
+            setVisible(false);
+            BaseWindow portfolioWindow = new PortfolioWindow();
+            portfolioWindow.showWindow("Portfolio",1000,800);
+            dispose();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            JOptionPane.showMessageDialog(container, "Falscher Benutzername, oder Passwort!");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(container, "Kein JDBC-Treiber gefunden!");
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(container, "Properties Datei nicht gefunden!");
+        }
     }
 }
