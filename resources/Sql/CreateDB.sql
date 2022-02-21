@@ -37,31 +37,32 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Info`
+-- Table `Type`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Info` (
+CREATE TABLE IF NOT EXISTS `Type` (
   `Id` INT NOT NULL AUTO_INCREMENT,
-  `Info` VARCHAR(100) NOT NULL,
-  `Description` VARCHAR(400) NOT NULL,
+  `Name` VARCHAR(50) NOT NULL,
+  `NeedsIncomeTax` TINYINT(1) NOT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE INDEX `Id_UNIQUE` (`Id` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Type`
+-- Table `Info`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Type` (
+CREATE TABLE IF NOT EXISTS `Info` (
   `Id` INT NOT NULL AUTO_INCREMENT,
-  `Info_Id` INT NOT NULL,
-  `Name` VARCHAR(50) NOT NULL,
-  `NeedsIncomeTax` TINYINT(1) NOT NULL,
+  `Type_Id` INT NOT NULL,
+  `Info` VARCHAR(100) NOT NULL,
+  `Description` VARCHAR(500) NOT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE INDEX `Id_UNIQUE` (`Id` ASC) VISIBLE,
-  INDEX `fk_Type_Info1_idx` (`Info_Id` ASC) VISIBLE,
-  CONSTRAINT `fk_Type_Info1`
-    FOREIGN KEY (`Info_Id`)
-    REFERENCES `Info` (`Id`)
+  INDEX `fk_Info_Type1_idx` (`Type_Id` ASC) VISIBLE,
+  UNIQUE INDEX `Type_Id_UNIQUE` (`Type_Id` ASC) VISIBLE,
+  CONSTRAINT `fk_Info_Type1`
+    FOREIGN KEY (`Type_Id`)
+    REFERENCES `Type` (`Id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -73,7 +74,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `Asset` (
   `Id` INT NOT NULL AUTO_INCREMENT,
   `Type_Id` INT NOT NULL,
-  `Abbreviation` VARCHAR(6) NOT NULL,
+  `ShortName` VARCHAR(6) NOT NULL,
   `Name` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`Id`),
   INDEX `fk_Assets_Type1_idx` (`Type_Id` ASC) VISIBLE,
@@ -96,6 +97,7 @@ CREATE TABLE IF NOT EXISTS `Investement` (
   `Asset_Id` INT NOT NULL,
   `Date` DATETIME NOT NULL,
   `PurchasePrice` DOUBLE NOT NULL,
+  `TransactionFee` DOUBLE NOT NULL,
   PRIMARY KEY (`Id`),
   INDEX `fk_Investement_Portfolio_idx` (`Portfolio_Id` ASC) VISIBLE,
   INDEX `fk_Investement_Platform1_idx` (`Platform_Id` ASC) VISIBLE,
@@ -120,34 +122,18 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `PricePerUnit`
+-- Table `History`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `PricePerUnit` (
-  `Id` INT NOT NULL AUTO_INCREMENT,
-  `Price` DOUBLE NOT NULL,
-  PRIMARY KEY (`Id`),
-  UNIQUE INDEX `Id_UNIQUE` (`Id` ASC) VISIBLE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `StockPrice`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `StockPrice` (
-  `Assets_Id` INT NOT NULL,
-  `CostPerUnit_Id` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `History` (
+  `Id` INT NOT NULL,
+  `Asset_Id` INT NOT NULL,
   `Date` DATETIME NOT NULL,
-  PRIMARY KEY (`Assets_Id`, `CostPerUnit_Id`),
-  INDEX `fk_Assets_has_CostPerUnit_CostPerUnit1_idx` (`CostPerUnit_Id` ASC) VISIBLE,
-  INDEX `fk_Assets_has_CostPerUnit_Assets1_idx` (`Assets_Id` ASC) VISIBLE,
-  CONSTRAINT `fk_Assets_has_CostPerUnit_Assets1`
-    FOREIGN KEY (`Assets_Id`)
+  `PricePerUnit` DOUBLE NOT NULL,
+  INDEX `fk_History_Asset1_idx` (`Asset_Id` ASC) VISIBLE,
+  PRIMARY KEY (`Id`),
+  CONSTRAINT `fk_History_Asset1`
+    FOREIGN KEY (`Asset_Id`)
     REFERENCES `Asset` (`Id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Assets_has_CostPerUnit_CostPerUnit1`
-    FOREIGN KEY (`CostPerUnit_Id`)
-    REFERENCES `PricePerUnit` (`Id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -160,6 +146,42 @@ CREATE TABLE IF NOT EXISTS `Config` (
   `Id` INT NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`Id`),
   UNIQUE INDEX `Id_UNIQUE` (`Id` ASC) VISIBLE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `Label`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Label` (
+  `Id` INT NOT NULL AUTO_INCREMENT,
+  `Name` VARCHAR(15) NOT NULL,
+  `Description` VARCHAR(200) NOT NULL,
+  `Color` VARCHAR(7) NULL,
+  PRIMARY KEY (`Id`),
+  UNIQUE INDEX `Id_UNIQUE` (`Id` ASC) VISIBLE,
+  UNIQUE INDEX `Name_UNIQUE` (`Name` ASC) VISIBLE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `Asset_has_Label`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Asset_has_Label` (
+  `Asset_Id` INT NOT NULL,
+  `Label_Id` INT NOT NULL,
+  PRIMARY KEY (`Asset_Id`, `Label_Id`),
+  INDEX `fk_Asset_has_Label_Label1_idx` (`Label_Id` ASC) VISIBLE,
+  INDEX `fk_Asset_has_Label_Asset1_idx` (`Asset_Id` ASC) VISIBLE,
+  CONSTRAINT `fk_Asset_has_Label_Asset1`
+    FOREIGN KEY (`Asset_Id`)
+    REFERENCES `Asset` (`Id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Asset_has_Label_Label1`
+    FOREIGN KEY (`Label_Id`)
+    REFERENCES `Label` (`Id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
