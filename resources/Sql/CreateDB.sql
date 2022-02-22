@@ -42,6 +42,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `Type` (
   `Id` INT NOT NULL AUTO_INCREMENT,
   `Name` VARCHAR(50) NOT NULL,
+  `ShortName` VARCHAR(10) NOT NULL,
   `NeedsIncomeTax` TINYINT(1) NOT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE INDEX `Id_UNIQUE` (`Id` ASC) VISIBLE)
@@ -74,14 +75,32 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `Asset` (
   `Id` INT NOT NULL AUTO_INCREMENT,
   `Type_Id` INT NOT NULL,
-  `ShortName` VARCHAR(6) NOT NULL,
   `Name` VARCHAR(100) NOT NULL,
+  `ShortName` VARCHAR(10) NOT NULL,
   PRIMARY KEY (`Id`),
   INDEX `fk_Assets_Type1_idx` (`Type_Id` ASC) VISIBLE,
   UNIQUE INDEX `Id_UNIQUE` (`Id` ASC) VISIBLE,
   CONSTRAINT `fk_Assets_Type1`
     FOREIGN KEY (`Type_Id`)
     REFERENCES `Type` (`Id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `History`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `History` (
+  `Id` INT NOT NULL,
+  `Asset_Id` INT NOT NULL,
+  `TimeStamp` DATETIME NOT NULL,
+  `PricePerUnit` DOUBLE NOT NULL,
+  INDEX `fk_History_Asset1_idx` (`Asset_Id` ASC) VISIBLE,
+  PRIMARY KEY (`Id`),
+  CONSTRAINT `fk_History_Asset1`
+    FOREIGN KEY (`Asset_Id`)
+    REFERENCES `Asset` (`Id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -95,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `Investement` (
   `Portfolio_Id` INT NOT NULL,
   `Platform_Id` INT NOT NULL,
   `Asset_Id` INT NOT NULL,
-  `Date` DATETIME NOT NULL,
+  `History_Id` INT NOT NULL,
   `PurchasePrice` DOUBLE NOT NULL,
   `TransactionFee` DOUBLE NOT NULL,
   PRIMARY KEY (`Id`),
@@ -103,6 +122,7 @@ CREATE TABLE IF NOT EXISTS `Investement` (
   INDEX `fk_Investement_Platform1_idx` (`Platform_Id` ASC) VISIBLE,
   INDEX `fk_Investement_Assets1_idx` (`Asset_Id` ASC) VISIBLE,
   UNIQUE INDEX `Id_UNIQUE` (`Id` ASC) VISIBLE,
+  INDEX `fk_Investement_History1_idx` (`History_Id` ASC) VISIBLE,
   CONSTRAINT `fk_Investement_Portfolio`
     FOREIGN KEY (`Portfolio_Id`)
     REFERENCES `Portfolio` (`Id`)
@@ -117,23 +137,10 @@ CREATE TABLE IF NOT EXISTS `Investement` (
     FOREIGN KEY (`Asset_Id`)
     REFERENCES `Asset` (`Id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `History`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `History` (
-  `Id` INT NOT NULL,
-  `Asset_Id` INT NOT NULL,
-  `Date` DATETIME NOT NULL,
-  `PricePerUnit` DOUBLE NOT NULL,
-  INDEX `fk_History_Asset1_idx` (`Asset_Id` ASC) VISIBLE,
-  PRIMARY KEY (`Id`),
-  CONSTRAINT `fk_History_Asset1`
-    FOREIGN KEY (`Asset_Id`)
-    REFERENCES `Asset` (`Id`)
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Investement_History1`
+    FOREIGN KEY (`History_Id`)
+    REFERENCES `History` (`Id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -156,7 +163,7 @@ CREATE TABLE IF NOT EXISTS `Label` (
   `Id` INT NOT NULL AUTO_INCREMENT,
   `Name` VARCHAR(15) NOT NULL,
   `Description` VARCHAR(200) NOT NULL,
-  `Color` VARCHAR(7) NULL,
+  `Color` VARCHAR(7) NULL DEFAULT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE INDEX `Id_UNIQUE` (`Id` ASC) VISIBLE,
   UNIQUE INDEX `Name_UNIQUE` (`Name` ASC) VISIBLE)
@@ -190,13 +197,10 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 -- -----------------------------------------------------
--- Admin
+-- Benutzer und Berechtigungen
 -- -----------------------------------------------------
 CREATE USER 'admin'@'localhost' IDENTIFIED BY 'pa$$Word';
 GRANT ALL PRIVILEGES ON Firestocks.* TO 'admin'@'localhost';
 
--- -----------------------------------------------------
--- User
--- -----------------------------------------------------
 CREATE USER 'user'@'localhost' IDENTIFIED BY 'pa$$Word';
--- Restriktievere Privilegien festlegen
+GRANT SELECT ON Firestocks.* TO 'user'@'localhost';
