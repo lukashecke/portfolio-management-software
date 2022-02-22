@@ -199,8 +199,8 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- -----------------------------------------------------
 -- Benutzer und Berechtigungen
 -- -----------------------------------------------------
-CREATE USER 'admin'@'localhost' IDENTIFIED BY 'pa$$Word';
+CREATE USER IF NOT EXISTS 'admin'@'localhost' IDENTIFIED BY 'pa$$Word';
 GRANT ALL PRIVILEGES ON Firestocks.* TO 'admin'@'localhost';
 
-CREATE USER 'user'@'localhost' IDENTIFIED BY 'pa$$Word';
+CREATE USER IF NOT EXISTS 'user'@'localhost' IDENTIFIED BY 'pa$$Word';
 GRANT SELECT ON Firestocks.* TO 'user'@'localhost';
