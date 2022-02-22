@@ -192,11 +192,11 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- -----------------------------------------------------
 -- Admin
 -- -----------------------------------------------------
-CREATE USER 'admin'@'localhost' IDENTIFIED BY 'pa$$Word';
+CREATE USER IF NOT EXISTS 'admin'@'localhost' IDENTIFIED BY 'pa$$Word';
 GRANT ALL PRIVILEGES ON Firestocks.* TO 'admin'@'localhost';
 
 -- -----------------------------------------------------
 -- User
 -- -----------------------------------------------------
-CREATE USER 'user'@'localhost' IDENTIFIED BY 'pa$$Word';
+CREATE USER IF NOT EXISTS 'user'@'localhost' IDENTIFIED BY 'pa$$Word';
 -- Restriktievere Privilegien festlegen
