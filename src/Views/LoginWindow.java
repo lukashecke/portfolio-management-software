@@ -93,13 +93,14 @@ public class LoginWindow extends BaseWindow {
     /**
      * Registriert alle benötigten Listener für das Fenster.
      * @author Lukas Hecke
+     * @author Namandeep Singh
      */
     private void addListener() {
         inputUserField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    inputPasswordField.requestFocus();
+                    loginUser(inputUserField.getText(), new String (inputPasswordField.getPassword()));
                 }
             }
         });
@@ -108,6 +109,7 @@ public class LoginWindow extends BaseWindow {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    inputPasswordField.selectAll();
                     loginUser(inputUserField.getText(), new String(inputPasswordField.getPassword()));
                 }
             }
