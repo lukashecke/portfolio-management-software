@@ -131,7 +131,16 @@ public class LoginWindow extends BaseWindow {
             dispose();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            JOptionPane.showMessageDialog(container, "Falscher Benutzername, oder Passwort!");
+            // Genauere Unterscheidung notwendig
+            var exceptionHash = throwables.getSQLState().hashCode();
+            switch (exceptionHash) {
+                // Unknown database 'firestocks'
+                case 49560306 -> JOptionPane.showMessageDialog(container, "Bitte vergewissern Sie sich, dass die Datenbank auf Ihrem Gerät eingespielt ist.", "Datenbank nicht gefunden", JOptionPane.ERROR_MESSAGE);
+                // Access denied for user ... (using password: YES)
+                case 47892010 -> JOptionPane.showMessageDialog(container, "Bitte überprüfen Sie den Benutzernamen und das Passwort.", "Falsche Anmeldedaten", JOptionPane.WARNING_MESSAGE);
+                // Sonstige Fehler
+                default -> JOptionPane.showMessageDialog(container, throwables.getMessage(), "Schwerliegender Fehler", JOptionPane.ERROR_MESSAGE);
+            }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(container, "Kein JDBC-Treiber gefunden!");
