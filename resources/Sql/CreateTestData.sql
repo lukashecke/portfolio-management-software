@@ -57,8 +57,8 @@ VALUES (2, 2, NOW(), 33000.00);
 -- -----------------------------------------------------
 -- Investments
 -- -----------------------------------------------------
-INSERT INTO investement (Id, Portfolio_Id, Platform_Id, Asset_Id, History_Id, PurchasePrice, TransactionFee)
+INSERT INTO investment (Id, Portfolio_Id, Platform_Id, Asset_Id, History_Id, PurchasePrice, TransactionFee)
 VALUES (1, 1, 1, 1, 1, 62.00, 1.00);
 
-INSERT INTO investement (Id, Portfolio_Id, Platform_Id, Asset_Id, History_Id, PurchasePrice, TransactionFee)
+INSERT INTO investment (Id, Portfolio_Id, Platform_Id, Asset_Id, History_Id, PurchasePrice, TransactionFee)
 VALUES (2, 1, 2, 2, 2, 50.00, 1.00);

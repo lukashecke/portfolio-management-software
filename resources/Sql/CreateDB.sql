@@ -204,3 +204,24 @@ GRANT ALL PRIVILEGES ON Firestocks.* TO 'admin'@'localhost';
 
 CREATE USER IF NOT EXISTS 'user'@'localhost' IDENTIFIED BY 'pa$$Word';
 GRANT SELECT ON Firestocks.* TO 'user'@'localhost';
+GRANT EXECUTE ON Firestocks.GetInvestmentsByPortfolio TO 'user'@'localhost';
+
+-- -----------------------------------------------------
+-- Prepared Statements
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Investments
+-- -----------------------------------------------------
+DELIMITER //
+
+CREATE PROCEDURE GetInvestmentsByPortfolioId(
+	IN portfolio_Id INT
+)
+BEGIN
+	SELECT *
+	FROM Investement
+	WHERE Portfolio_Id = portfolio_Id;
+END //
+
+DELIMITER ;
