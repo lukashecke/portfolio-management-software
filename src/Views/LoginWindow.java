@@ -1,6 +1,8 @@
 package Views;
 
 import Business.DBConnection;
+import Controllers.PortfolioController;
+import Models.PortfolioModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -128,8 +130,11 @@ public class LoginWindow extends BaseWindow {
         try {
             DBConnection.getInstance().setConnection(user, password);
             setVisible(false);
-            BaseWindow portfolioWindow = new PortfolioWindow();
-            portfolioWindow.showWindow("Portfolio",1000,800);
+
+            PortfolioModel portfolioModel = new PortfolioModel();
+            PortfolioWindow portfolioWindow = new PortfolioWindow();
+            PortfolioController portfolioController = new PortfolioController(portfolioModel, portfolioWindow);
+            portfolioController.showWindow("Portfolio",1000,800);
             dispose();
         } catch (SQLException throwables) {
             throwables.printStackTrace();

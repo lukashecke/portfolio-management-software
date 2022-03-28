@@ -25,7 +25,7 @@ public class BaseWindow extends JFrame {
      * @author  Lukas Hecke
      * @author  Namandeep Singh
      */
-    protected void showWindow(String title, int width, int height) {
+    public void showWindow(String title, int width, int height) {
         setTitle(title);
         pack();
         setSize(width, height);
