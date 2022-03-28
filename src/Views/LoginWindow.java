@@ -44,6 +44,7 @@ public class LoginWindow extends BaseWindow {
         super();
         setComponents();
         addListener();
+        setResizable(false);
         showWindow("Firestocks", 500, 300);
     }
 
@@ -65,7 +66,10 @@ public class LoginWindow extends BaseWindow {
         inputPasswordField = new JPasswordField();
         loginButton = new JButton("Login");
 
-        logo = new JLabel("Hier später Logo");
+        Image rawImage = new ImageIcon(getClass().getClassLoader().getResource("resources/Logo_mit_Text_Login.png")).getImage();
+        Image renderedImage = rawImage.getScaledInstance(200, 189, Image.SCALE_SMOOTH);
+        ImageIcon image = new ImageIcon(renderedImage);
+        logo = new JLabel(image);
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridwidth = GridBagConstraints.RELATIVE;
