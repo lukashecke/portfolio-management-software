@@ -107,9 +107,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Investement`
+-- Table `Investment`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Investement` (
+CREATE TABLE IF NOT EXISTS `Investment` (
   `Id` INT NOT NULL AUTO_INCREMENT,
   `Portfolio_Id` INT NOT NULL,
   `Platform_Id` INT NOT NULL,
@@ -118,27 +118,27 @@ CREATE TABLE IF NOT EXISTS `Investement` (
   `PurchasePrice` DOUBLE NOT NULL,
   `TransactionFee` DOUBLE NOT NULL,
   PRIMARY KEY (`Id`),
-  INDEX `fk_Investement_Portfolio_idx` (`Portfolio_Id` ASC) VISIBLE,
-  INDEX `fk_Investement_Platform1_idx` (`Platform_Id` ASC) VISIBLE,
-  INDEX `fk_Investement_Assets1_idx` (`Asset_Id` ASC) VISIBLE,
+  INDEX `fk_Investment_Portfolio_idx` (`Portfolio_Id` ASC) VISIBLE,
+  INDEX `fk_Investment_Platform1_idx` (`Platform_Id` ASC) VISIBLE,
+  INDEX `fk_Investment_Assets1_idx` (`Asset_Id` ASC) VISIBLE,
   UNIQUE INDEX `Id_UNIQUE` (`Id` ASC) VISIBLE,
-  INDEX `fk_Investement_History1_idx` (`History_Id` ASC) VISIBLE,
-  CONSTRAINT `fk_Investement_Portfolio`
+  INDEX `fk_Investment_History1_idx` (`History_Id` ASC) VISIBLE,
+  CONSTRAINT `fk_Investment_Portfolio`
     FOREIGN KEY (`Portfolio_Id`)
     REFERENCES `Portfolio` (`Id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Investement_Platform1`
+  CONSTRAINT `fk_Investment_Platform1`
     FOREIGN KEY (`Platform_Id`)
     REFERENCES `Platform` (`Id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Investement_Assets1`
+  CONSTRAINT `fk_Investment_Assets1`
     FOREIGN KEY (`Asset_Id`)
     REFERENCES `Asset` (`Id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Investement_History1`
+  CONSTRAINT `fk_Investment_History1`
     FOREIGN KEY (`History_Id`)
     REFERENCES `History` (`Id`)
     ON DELETE NO ACTION
@@ -197,17 +197,7 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 -- -----------------------------------------------------
--- Benutzer und Berechtigungen
--- -----------------------------------------------------
-CREATE USER IF NOT EXISTS 'admin'@'localhost' IDENTIFIED BY 'pa$$Word';
-GRANT ALL PRIVILEGES ON Firestocks.* TO 'admin'@'localhost';
-
-CREATE USER IF NOT EXISTS 'user'@'localhost' IDENTIFIED BY 'pa$$Word';
-GRANT SELECT ON Firestocks.* TO 'user'@'localhost';
-GRANT EXECUTE ON Firestocks.GetInvestmentsByPortfolio TO 'user'@'localhost';
-
--- -----------------------------------------------------
--- Prepared Statements
+-- Stored Procedures
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
@@ -215,13 +205,33 @@ GRANT EXECUTE ON Firestocks.GetInvestmentsByPortfolio TO 'user'@'localhost';
 -- -----------------------------------------------------
 DELIMITER //
 
-CREATE PROCEDURE GetInvestmentsByPortfolioId(
+CREATE PROCEDURE GetInvestments(
 	IN portfolio_Id INT
 )
 BEGIN
 	SELECT *
-	FROM Investement
+	FROM Investment
 	WHERE Portfolio_Id = portfolio_Id;
+END //
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- Assets
+-- -----------------------------------------------------
+DELIMITER //
+
+CREATE PROCEDURE GetSummedAssets(
+	IN portfolio_Id INT
+)
+BEGIN
+	SELECT asset.Name AS 'Asset', SUM(investment.PurchasePrice) AS 'Investierter Betrag'
+    FROM investment
+    LEFT JOIN asset ON Asset_Id = asset.Id
+    LEFT JOIN history ON History_id = history.Id
+    WHERE Portfolio_Id = portfolio_Id
+    GROUP BY asset.Id, asset.Name
+    ORDER BY 2 desc;
 END //
 
 DELIMITER ;
