@@ -1,8 +1,10 @@
 package Controllers;
 
-import Models.DataTableModel;
+import Models.Asset;
 import Models.PortfolioModel;
 import Views.PortfolioWindow;
+
+import javax.swing.*;
 
 public class PortfolioController {
     private PortfolioModel model;
@@ -16,7 +18,9 @@ public class PortfolioController {
     }
 
     public void updateView() {
-        view.getAssets().setModel(new DataTableModel(model.getAssets()));
+        DefaultListModel<Asset> listModel = new DefaultListModel<>();
+        listModel.addAll(model.getAssets());
+        view.getAssets().setModel(listModel);
     }
 
     public void showWindow(String title, int width, int height) {

@@ -31,7 +31,7 @@ INSERT INTO asset (Id, Type_Id, Name, ShortName)
 VALUES (1, 1, 'MSCI All Country World Index', 'MSCI ACWI');
 
 INSERT INTO asset (Id, Type_Id, Name, ShortName) 
-VALUES (2, 1, 'Bitcoin', 'BTC');
+VALUES (2, 2, 'Bitcoin', 'BTC');
 
 -- -----------------------------------------------------
 -- Labels

@@ -1,11 +1,15 @@
 package Business;
 
 import Helper.ConsoleHelper;
+import Models.Asset;
+import Models.AssetType;
+import com.mysql.jdbc.CallableStatement;
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -83,5 +87,71 @@ public class DBConnection {
             System.out.println("Datenbank-Verbindung konnte nicht geschlossen werden!");
         }
         this.connection = null;
+    }
+
+    public Asset GetAssetById(int id){
+        Asset asset = new Asset();
+        String SQL = "{call GetAsset("+id+")}";
+        int typeId;
+        try(CallableStatement callableStatement = (CallableStatement) DBConnection.getInstance().connection.prepareCall(SQL)) {
+            callableStatement.executeQuery();
+            ResultSet rs = callableStatement.getResultSet();
+
+            rs.next();
+
+            asset.setId(rs.getInt("Id"));
+            asset.setName(rs.getString("Name"));
+            asset.setShortNme(rs.getString("ShortName"));
+            typeId = rs.getInt("Type_Id");
+            asset.setType(GetAssetTypeById(typeId));
+
+            ConsoleHelper.printResultSet(rs);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return asset;
+    }
+
+    public AssetType GetAssetTypeById(int id){
+        AssetType assetType = new AssetType();
+        String SQL = "{call GetType("+id+")}";
+        try(CallableStatement callableStatement = (CallableStatement) DBConnection.getInstance().connection.prepareCall(SQL)) {
+            callableStatement.executeQuery();
+            ResultSet rs = callableStatement.getResultSet();
+
+            rs.next();
+
+            assetType.setId(rs.getInt("Id"));
+            assetType.setName(rs.getString("Name"));
+            assetType.setShortName(rs.getString("ShortName"));
+            assetType.setNeedsIncomeTax(rs.getBoolean("NeedsIncomeTax"));
+
+            ConsoleHelper.printResultSet(rs);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        SQL = "{call GetInfo("+assetType.getId()+")}";
+        try(CallableStatement callableStatement = (CallableStatement) DBConnection.getInstance().connection.prepareCall(SQL)) {
+            callableStatement.executeQuery();
+            ResultSet rs = callableStatement.getResultSet();
+
+            rs.next();
+
+            if (rs.getFetchSize() != 0) {
+                assetType.setInfo(rs.getString("Info"));
+                assetType.setDescription(rs.getString("Description"));
+            }
+
+            ConsoleHelper.printResultSet(rs);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        return assetType;
     }
 }

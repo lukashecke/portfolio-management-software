@@ -221,17 +221,62 @@ DELIMITER ;
 -- -----------------------------------------------------
 DELIMITER //
 
+CREATE PROCEDURE GetAsset(
+	IN asset_Id INT
+)
+BEGIN
+	SELECT *
+    FROM asset
+    WHERE asset.id = asset_Id;
+END //
+
+DELIMITER ;
+
+DELIMITER //
+
 CREATE PROCEDURE GetSummedAssets(
 	IN portfolio_Id INT
 )
 BEGIN
-	SELECT asset.Name AS 'Asset', SUM(investment.PurchasePrice) AS 'Investierter Betrag'
+	SELECT asset.Id, asset.Name AS 'Asset', SUM(investment.PurchasePrice) AS 'Investierter Betrag'
     FROM investment
     LEFT JOIN asset ON Asset_Id = asset.Id
     LEFT JOIN history ON History_id = history.Id
     WHERE Portfolio_Id = portfolio_Id
     GROUP BY asset.Id, asset.Name
     ORDER BY 2 desc;
+END //
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- Type
+-- -----------------------------------------------------
+DELIMITER //
+
+CREATE PROCEDURE GetType(
+	IN type_Id INT
+)
+BEGIN
+	SELECT *
+    FROM type
+    WHERE Id = type_Id;
+END //
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- Info
+-- -----------------------------------------------------
+DELIMITER //
+
+CREATE PROCEDURE GetInfo(
+	IN info_Id INT
+)
+BEGIN
+	SELECT *
+    FROM info
+    WHERE Type_Id = info_Id;
 END //
 
 DELIMITER ;
