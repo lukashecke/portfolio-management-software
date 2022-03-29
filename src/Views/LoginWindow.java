@@ -3,6 +3,7 @@ package Views;
 import Business.DBConnection;
 import Controllers.PortfolioController;
 import Models.PortfolioModel;
+import com.formdev.flatlaf.FlatLightLaf;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,6 +30,7 @@ public class LoginWindow extends BaseWindow {
     private Container container;
 
     private JPanel loginPanel;
+    private JPanel imagePanel;
     private JTextField inputUserField;
     private JPasswordField inputPasswordField;
     private JButton loginButton;
@@ -42,6 +44,9 @@ public class LoginWindow extends BaseWindow {
      */
     public LoginWindow() {
         super();
+
+        FlatLightLaf.setup(); // Theme
+
         setComponents();
         addListener();
         setResizable(false);
@@ -62,6 +67,10 @@ public class LoginWindow extends BaseWindow {
         // Controls
         loginPanel = new JPanel();
         loginPanel.setLayout(new GridBagLayout());
+
+        imagePanel = new JPanel();
+        imagePanel.setLayout(new GridLayout());
+
         inputUserField = new JTextField();
         inputPasswordField = new JPasswordField();
         loginButton = new JButton("Login");
@@ -70,6 +79,8 @@ public class LoginWindow extends BaseWindow {
         Image renderedImage = rawImage.getScaledInstance(200, 189, Image.SCALE_SMOOTH);
         ImageIcon image = new ImageIcon(renderedImage);
         logo = new JLabel(image);
+        logo.setHorizontalAlignment(SwingConstants.CENTER);
+        imagePanel.add(logo);
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridwidth = GridBagConstraints.RELATIVE;
@@ -92,8 +103,7 @@ public class LoginWindow extends BaseWindow {
 
         // Zusammenbauen der Seite
         container.add(loginPanel, 0);
-        logo.setHorizontalAlignment(SwingConstants.CENTER);
-        container.add(logo, 1);
+        container.add(imagePanel, 1);
     }
 
     /**
