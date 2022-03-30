@@ -62,4 +62,9 @@ public class Asset {
     public void setInvestments(ArrayList<Investment> investments) {
         this.investments = investments;
     }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }

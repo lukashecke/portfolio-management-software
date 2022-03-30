@@ -1,5 +1,6 @@
 package Views;
 
+import Business.DBConnection;
 import Formatter.DateLabelFormatter;
 
 import java.awt.Container;
@@ -7,6 +8,7 @@ import javax.swing.*;
 import java.awt.Font;
 import java.util.Properties;
 
+import Models.Asset;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -15,7 +17,7 @@ public class AddInvestmentWindow extends BaseWindow {
 
 	private JLabel message;
 	private JLabel assetLabel;
-	private JComboBox<String> assetList;
+	private JComboBox<Asset> assetComboBox;
 	private JLabel transactionFeeLabel;
 	private JLabel purchasePriceLabel;
 	private JLabel pricePerUnitLabel;
@@ -46,10 +48,13 @@ public class AddInvestmentWindow extends BaseWindow {
 		message.setFont(new Font("Courier", Font.BOLD, 40));
 
 		assetLabel = new JLabel("Asset");
-		assetList = new JComboBox<String>();
-		assetList.addItem("Stocks");
-		assetList.addItem("ETFs");
-		assetList.addItem("Metals");
+
+		var assets = DBConnection.getInstance().GetAssets();
+
+		assetComboBox = new JComboBox<Asset>();
+		for (Asset asset:assets) {
+			assetComboBox.addItem(asset);
+		}
 
 		purchasePriceLabel = new JLabel("Kaufpreis");
 		purchasePriceField = new JTextField();
@@ -86,7 +91,7 @@ public class AddInvestmentWindow extends BaseWindow {
 		message.setBounds(50, 10, 800, 50);             //links , höhe , länge , breite
 
 		assetLabel.setBounds(50, 100, 100, 30);
-		assetList.setBounds(170, 100, 200, 30);
+		assetComboBox.setBounds(170, 100, 200, 30);
 
 		purchasePriceLabel.setBounds(50, 160, 100, 30);
 		purchasePriceField.setBounds(170, 160, 200, 30);
@@ -107,7 +112,7 @@ public class AddInvestmentWindow extends BaseWindow {
 	public void addComponents() {
 		container.add(message);
 		container.add(assetLabel);
-		container.add(assetList);
+		container.add(assetComboBox);
 		container.add(purchasePriceLabel);
 		container.add(purchasePriceField);
 		container.add(pricePerUnitLabel);

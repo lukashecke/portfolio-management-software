@@ -281,6 +281,16 @@ END //
 
 DELIMITER ;
 
+DELIMITER //
+
+CREATE PROCEDURE GetAssets()
+BEGIN
+	SELECT *
+    FROM asset;
+END //
+
+DELIMITER ;
+
 -- -----------------------------------------------------
 -- Type
 -- -----------------------------------------------------

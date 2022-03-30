@@ -222,4 +222,30 @@ public class DBConnection {
         }
         return investedSum;
     }
+
+    public ArrayList<Asset> GetAssets() {
+        ArrayList<Asset> assets = new ArrayList<>();
+        String SQL = "{call GetAssets()}";
+        try(CallableStatement callableStatement = (CallableStatement) DBConnection.getInstance().connection.prepareCall(SQL)) {
+            callableStatement.executeQuery();
+            ResultSet rs = callableStatement.getResultSet();
+
+            while (rs.next()) {
+                var asset = new Asset();
+                asset.setId(rs.getInt("Id"));
+                asset.setName(rs.getString("Name"));
+                asset.setShortName(rs.getString("ShortName"));
+                int assetTypeId = rs.getInt("Type_Id");
+                asset.setType(DBConnection.getInstance().GetAssetTypeById(assetTypeId));
+
+                assets.add(asset);
+            }
+
+            ConsoleHelper.printResultSet(rs);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return assets;
+    }
 }
