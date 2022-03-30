@@ -1,34 +1,41 @@
 package Views;
 
-import Models.AssetType;
+import Controls.AssetList;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class PortfolioWindow extends BaseWindow {
     private Container container;
-    private JList<AssetType> investedAssetTypes = new JList<>();
+
+    JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP,JTabbedPane.SCROLL_TAB_LAYOUT);
+
+    private AssetList investedETFs = new AssetList();
+    private AssetList investedCrypto = new AssetList();
+    private AssetList investedMetals = new AssetList();
 
     public PortfolioWindow() {
         super();
 
-        investedAssetTypes.setCellRenderer(new AssetTypeCellRenderer());
-
         container = getContentPane();
         container.setLayout(new GridLayout(1,1));
-        container.add(investedAssetTypes);
 
-        investedAssetTypes.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                if (evt.getClickCount() == 2) {
-                    var selectedAssetType = investedAssetTypes.getSelectedValue();
-                }
-            }
-        });
+        tabbedPane.addTab("ETFs", investedETFs);
+        tabbedPane.addTab("Krypto", investedCrypto);
+        tabbedPane.addTab("Edelmetalle", investedMetals);
+
+        container.add(tabbedPane);
     }
 
-    public JList<AssetType> getInvestedAssetTypes() {
-        return investedAssetTypes;
+    public AssetList getInvestedETFs() {
+        return investedETFs;
+    }
+
+    public AssetList getInvestedCrypto() {
+        return investedCrypto;
+    }
+
+    public AssetList getInvestedMetals() {
+        return investedMetals;
     }
 }

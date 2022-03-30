@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Asset {
     private int id;
     private String name;
-    private String shortNme;
+    private String shortName;
     private AssetType type;
 
     // TODO: Sql mit abfragen (gesonderte Abfragen)
@@ -31,12 +31,12 @@ public class Asset {
         this.name = name;
     }
 
-    public String getShortNme() {
-        return shortNme;
+    public String getShortName() {
+        return shortName;
     }
 
-    public void setShortNme(String shortNme) {
-        this.shortNme = shortNme;
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 
     public AssetType getType() {

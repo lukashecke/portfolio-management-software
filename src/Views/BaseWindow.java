@@ -38,7 +38,9 @@ public class BaseWindow extends JFrame {
      * @author Lukas Hecke
      */
     private void exit() {
-        DBConnection.getInstance().closeConnection();
-        System.exit(0);
+        if (this instanceof PortfolioWindow || this instanceof LoginWindow) {
+            DBConnection.getInstance().closeConnection();
+            System.exit(0);
+        }
     }
 }

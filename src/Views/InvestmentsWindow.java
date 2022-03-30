@@ -6,9 +6,11 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
 public class InvestmentsWindow extends BaseWindow {
-
+	private Container container;
 	public void investmentPane() {
 		{
+			container = getContentPane();
+
 			String[] index = new String[]{"Investitionssumme", "Investitionsdatum"};
 			JFrame frame = new JFrame("Investments");
 			JLabel label = new JLabel("Bitcoin", JLabel.CENTER);
@@ -33,12 +35,13 @@ public class InvestmentsWindow extends BaseWindow {
 
 			JScrollPane scrollPane = new JScrollPane(panel);
 
-		//	showWindow("Neue Investition", 320, 200);
+			container.add(scrollPane);
 		}
 	}
 
 	public InvestmentsWindow() {
 		super();
+
 		investmentPane();
 	}
 }

@@ -1,13 +1,13 @@
 package Views;
 
-import Models.AssetType;
+import Models.Asset;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class AssetTypeCellRenderer implements ListCellRenderer<AssetType> {
+public class AssetCellRenderer implements ListCellRenderer<Asset> {
     @Override
-    public Component getListCellRendererComponent(JList<? extends AssetType> list, AssetType value, int index, boolean isSelected, boolean cellHasFocus) {
+    public Component getListCellRendererComponent(JList<? extends Asset> list, Asset value, int index, boolean isSelected, boolean cellHasFocus) {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         JLabel nameLabel = new JLabel(value.getName());
@@ -39,12 +39,10 @@ public class AssetTypeCellRenderer implements ListCellRenderer<AssetType> {
             // Hintergrundfarbe
             var background = UIManager.getColor("List.background");
 
-
-
             // Schriftfarbe
-            panel.setForeground(UIManager.getColor("List.foreground"));
+            panel.setForeground(UIManager.getColor(foreground));
             // Hintergrund
-            panel.setBackground(UIManager.getColor("List.background"));
+            panel.setBackground(UIManager.getColor(background));
         }
         return panel;
     }

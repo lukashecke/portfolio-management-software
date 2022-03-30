@@ -6,13 +6,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class PortfolioModel {
-    private ArrayList<AssetType> investedAssetTypes;
+    private ArrayList<Asset> investedAssetTypes;
 
     public PortfolioModel() {
-        investedAssetTypes = DBConnection.getInstance().GetInvestedAssetTypes();
+        investedAssetTypes = DBConnection.getInstance().GetInvestedAssets();
     }
 
-    public Collection<? extends AssetType> getInvestedAssetTypes() {
+    public Collection<? extends Asset> getInvestedAssets() {
         return investedAssetTypes;
     }
 }
