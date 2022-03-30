@@ -266,6 +266,21 @@ END //
 
 DELIMITER ;
 
+DELIMITER //
+
+CREATE PROCEDURE GetInvestedSumForAsset(
+	IN asset_Id INT
+)
+BEGIN
+	SELECT SUM(investment.PurchasePrice)
+    FROM investment
+    LEFT JOIN asset ON investment.Asset_Id = asset.Id
+    WHERE asset.id = asset_Id
+    GROUP BY asset.Id;
+END //
+
+DELIMITER ;
+
 -- -----------------------------------------------------
 -- Type
 -- -----------------------------------------------------

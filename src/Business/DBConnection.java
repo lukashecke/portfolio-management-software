@@ -203,4 +203,23 @@ public class DBConnection {
         }
         return assets;
     }
+
+    public double getInvestedSumForAsset(int id) {
+        double investedSum = -1;
+        String SQL = "{call GetInvestedSumForAsset("+ id+")}";
+        try(CallableStatement callableStatement = (CallableStatement) DBConnection.getInstance().connection.prepareCall(SQL)) {
+            callableStatement.executeQuery();
+            ResultSet rs = callableStatement.getResultSet();
+
+            rs.next();
+
+            investedSum = rs.getDouble(1);
+
+            ConsoleHelper.printResultSet(rs);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return investedSum;
+    }
 }

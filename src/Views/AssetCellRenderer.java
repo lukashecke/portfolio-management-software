@@ -1,5 +1,6 @@
 package Views;
 
+import Business.DBConnection;
 import Models.Asset;
 
 import javax.swing.*;
@@ -11,7 +12,8 @@ public class AssetCellRenderer implements ListCellRenderer<Asset> {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         JLabel nameLabel = new JLabel(value.getName());
-        JLabel investmentSumLabel = new JLabel("5€");
+        double investedSum = DBConnection.getInstance().getInvestedSumForAsset(value.getId());
+        JLabel investmentSumLabel = new JLabel(investedSum + "€");
         panel.add(nameLabel, BorderLayout.WEST);
         // TODO: hier total investment summe aus neuer prepared statement
         panel.add(investmentSumLabel, BorderLayout.EAST);
