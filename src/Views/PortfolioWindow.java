@@ -18,13 +18,23 @@ public class PortfolioWindow extends BaseWindow {
         super();
 
         container = getContentPane();
-        container.setLayout(new GridLayout(1,1));
+        container.setLayout(new BorderLayout());
 
         tabbedPane.addTab("ETFs", investedETFs);
         tabbedPane.addTab("Krypto", investedCrypto);
         tabbedPane.addTab("Edelmetalle", investedMetals);
 
-        container.add(tabbedPane);
+        container.add(tabbedPane, BorderLayout.CENTER);
+        JPanel buttonPane = new JPanel();
+        buttonPane.setLayout(new BorderLayout());
+        JButton button = new JButton("Neues Investment");
+        button.addActionListener((e) -> {
+            var window = new AddInvestmentWindow();
+            window.showWindow("Neues Investment",750,550);
+        });
+        buttonPane.add(button, BorderLayout.EAST);
+        buttonPane.setBackground(Color.white);
+        container.add(buttonPane, BorderLayout.SOUTH);
     }
 
     public AssetList getInvestedETFs() {
