@@ -1,11 +1,12 @@
 package Views;
 
+import Formatter.DateLabelFormatter;
+
 import java.awt.Container;
 import javax.swing.*;
 import java.awt.Font;
 import java.util.Properties;
 
-import Formatter.DateLabelFormatter;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -36,7 +37,7 @@ public class AddInvestmentWindow extends BaseWindow {
 	}
 
 	private void investmentFrame() {
-		showWindow("Neue Investition", 900, 700);
+	//	showWindow("Neue Investition", 900, 700);
 	}
 
 
