@@ -92,7 +92,7 @@ ENGINE = InnoDB;
 -- Table `History`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `History` (
-  `Id` INT NOT NULL,
+  `Id` INT NOT NULL AUTO_INCREMENT,
   `Asset_Id` INT NOT NULL,
   `TimeStamp` DATETIME NOT NULL,
   `PricePerUnit` DOUBLE NOT NULL,
@@ -216,6 +216,36 @@ END //
 
 DELIMITER ;
 
+DELIMITER //
+
+CREATE PROCEDURE CreateNewInvestment(
+    IN portfolio_Id INT,
+    IN asset_Id INT,
+    IN platform_Id INT,
+    IN purchaseDate VARCHAR(20),
+    IN pricePerUnit DOUBLE,
+    IN purchasePrice DOUBLE,
+    IN transactionFee DOUBLE
+)
+BEGIN
+-- Nächsten IDs holen
+SELECT @historyId:=AUTO_INCREMENT
+FROM information_schema.tables
+WHERE table_name = 'history';
+
+SELECT @investmentId:=AUTO_INCREMENT
+FROM information_schema.tables
+WHERE table_name = 'investment';
+
+	INSERT INTO history (Id, Asset_Id, TimeStamp, PricePerUnit)
+    VALUES (@historyId, asset_Id, DATE(purchaseDate), pricePerUnit);
+
+    INSERT INTO investment (Id, Portfolio_Id, Platform_Id, Asset_Id, History_Id, PurchasePrice, TransactionFee)
+    VALUES (@investmentId, portfolio_Id, platform_Id, asset_Id, @historyId, purchasePrice, transactionFee);
+END //
+
+DELIMITER ;
+
 -- -----------------------------------------------------
 -- Assets
 -- -----------------------------------------------------
@@ -260,7 +290,7 @@ BEGIN
     LEFT JOIN asset ON asset.Type_Id = type.Id
     LEFT JOIN investment ON investment.Asset_Id = asset.Id
     WHERE investment.Portfolio_Id = portfolio_Id
-    GROUP BY asset.Id
+    GROUP BY asset.Id, asset.Type_Id, asset.Name, asset.ShortName
     HAVING COUNT(investment.Id) > 0;
 END //
 

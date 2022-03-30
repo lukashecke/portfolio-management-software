@@ -3,9 +3,12 @@ package Views;
 import Business.DBConnection;
 import Formatter.DateLabelFormatter;
 
-import java.awt.Container;
+import java.awt.*;
 import javax.swing.*;
-import java.awt.Font;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
 
 import Models.Asset;
@@ -56,14 +59,39 @@ public class AddInvestmentWindow extends BaseWindow {
 			assetComboBox.addItem(asset);
 		}
 
+		FocusListener focusListener = new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (!e.isTemporary()) {
+					String content = purchasePriceField.getText();
+					try {
+						double parsedContent = Double.parseDouble(content);
+						// wird nur bei erfolgreichem Parsen erreicht (z.B. nach korrektur)
+						((JTextField)e.getComponent()).setBorder(BorderFactory.createLineBorder(Color.lightGray));
+					} catch (NumberFormatException ex) {
+						((JTextField)e.getComponent()).setBorder(BorderFactory.createLineBorder(Color.RED));
+					}
+				}
+			}
+		};
+
+
 		purchasePriceLabel = new JLabel("Kaufpreis");
 		purchasePriceField = new JTextField();
+		purchasePriceField.addFocusListener(focusListener);
 
 		pricePerUnitLabel = new JLabel("Preis pro Einheit");
 		pricePerUnitField = new JTextField();
+		pricePerUnitField.addFocusListener(focusListener);
 
 		transactionFeeLabel = new JLabel("Transaktionsgebühr");
 		transactionFeeField = new JTextField();
+		transactionFeeField.addFocusListener(focusListener);
 
 		dateOfPurchaseLabel = new JLabel("Kaufdatum");
 
@@ -79,6 +107,30 @@ public class AddInvestmentWindow extends BaseWindow {
 
 
 		submitButton = new JButton("SPEICHERN");
+		submitButton.addActionListener((e) -> {
+			try {
+				double purchasePrice = Double.parseDouble(purchasePriceField.getText());
+				double pricePerUnit = Double.parseDouble(pricePerUnitField.getText());
+				double transactionFee = Double.parseDouble(transactionFeeField.getText());
+
+				Asset selectedAsset = (Asset)assetComboBox.getSelectedItem();
+				Date selectedDate = (Date)datePicker.getModel().getValue();
+				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+				String formattedDateText = formatter.format(selectedDate);
+
+				// todo: platform muss in maske übergeben werden
+				int platformId = 1;
+
+				DBConnection.getInstance().createNewInvestment(selectedAsset, platformId, "\""+formattedDateText+"\"", pricePerUnit, purchasePrice, transactionFee);
+
+				JOptionPane.showMessageDialog(container, "Neues Investment erfolgreich gespeichert", "Anlegen erfolgreich", JOptionPane.INFORMATION_MESSAGE);
+				// this.exit();
+			} catch (NumberFormatException ex) {
+				transactionFeeField.setBorder(BorderFactory.createLineBorder(Color.RED));
+				JOptionPane.showMessageDialog(container, "Sie haben einen ungültigen Wert in eines der Zahlenfelder eingetragen", "Falsche Eingaben", JOptionPane.WARNING_MESSAGE);
+			}
+
+		});
 		container = getContentPane();
 		container.setLayout(null);
 

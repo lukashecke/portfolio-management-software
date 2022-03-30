@@ -248,4 +248,17 @@ public class DBConnection {
         }
         return assets;
     }
+
+    public void createNewInvestment(Asset selectedAsset, int platformId, String selectedDate, double pricePerUnit, double purchasePrice, double transactionFee) {
+        String SQL = "{call CreateNewInvestment(1, "+ selectedAsset.getId() +", "+platformId+", "+ selectedDate +", "+pricePerUnit+", "+purchasePrice+", "+transactionFee+")}";
+        try(CallableStatement callableStatement = (CallableStatement) DBConnection.getInstance().connection.prepareCall(SQL)) {
+            callableStatement.executeQuery();
+            ResultSet rs = callableStatement.getResultSet();
+
+            ConsoleHelper.printResultSet(rs);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
