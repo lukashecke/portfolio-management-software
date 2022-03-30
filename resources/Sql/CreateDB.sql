@@ -265,6 +265,23 @@ END //
 
 DELIMITER ;
 
+DELIMITER //
+
+CREATE PROCEDURE GetInvestedAssetTypes(
+	IN portfolio_Id INT
+)
+BEGIN
+	SELECT type.*
+    FROM type
+    LEFT JOIN asset ON asset.Type_Id = type.Id
+    LEFT JOIN investment ON investment.Asset_Id = asset.Id
+    WHERE investment.Portfolio_Id = portfolio_Id
+    GROUP BY type.Id
+    HAVING COUNT(investment.Id) > 0;
+END //
+
+DELIMITER ;
+
 -- -----------------------------------------------------
 -- Info
 -- -----------------------------------------------------

@@ -23,6 +23,7 @@ public class LoginWindow extends BaseWindow {
      * @author Namandeep Singh
      */
     public static void main(String[] args) {
+        FlatLightLaf.setup(); // Theme
         new LoginWindow();
     }
 
@@ -44,8 +45,6 @@ public class LoginWindow extends BaseWindow {
      */
     public LoginWindow() {
         super();
-
-        FlatLightLaf.setup(); // Theme
 
         setComponents();
         addListener();

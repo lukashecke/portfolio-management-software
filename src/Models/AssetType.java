@@ -11,6 +11,11 @@ public class AssetType {
     private String info;
     private String description;
 
+    @Override
+    public String toString() {
+        return this.getName();
+    }
+
     public int getId() {
         return id;
     }

@@ -1,6 +1,6 @@
 package Controllers;
 
-import Models.Asset;
+import Models.AssetType;
 import Models.PortfolioModel;
 import Views.PortfolioWindow;
 
@@ -18,9 +18,10 @@ public class PortfolioController {
     }
 
     public void updateView() {
-        DefaultListModel<Asset> listModel = new DefaultListModel<>();
-        listModel.addAll(model.getAssets());
-        view.getAssets().setModel(listModel);
+        DefaultListModel<AssetType> listModel = new DefaultListModel<>();
+        listModel.addAll(model.getInvestedAssetTypes());
+        view.getInvestedAssetTypes().setModel(listModel);
+        view.getInvestedAssetTypes().repaint();
     }
 
     public void showWindow(String title, int width, int height) {

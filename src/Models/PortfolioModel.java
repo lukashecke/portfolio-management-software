@@ -1,37 +1,18 @@
 package Models;
 
 import Business.DBConnection;
-import Helper.ConsoleHelper;
-import com.mysql.jdbc.CallableStatement;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class PortfolioModel {
-    private ArrayList<Asset> assets;
+    private ArrayList<AssetType> investedAssetTypes;
 
     public PortfolioModel() {
-        assets = new ArrayList<>();
-
-        String SQL = "{call GetSummedAssets(1)}";
-        try(CallableStatement callableStatement = (CallableStatement)DBConnection.getInstance().connection.prepareCall(SQL)) {
-            callableStatement.executeQuery();
-            ResultSet rs = callableStatement.getResultSet();
-
-            while(rs.next()) {
-                int id = rs.getInt("Id");
-                assets.add(DBConnection.getInstance().GetAssetById(id));
-            }
-
-            ConsoleHelper.printResultSet(rs);
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
+        investedAssetTypes = DBConnection.getInstance().GetInvestedAssetTypes();
     }
 
-    public ArrayList<Asset> getAssets() {
-        return assets;
+    public Collection<? extends AssetType> getInvestedAssetTypes() {
+        return investedAssetTypes;
     }
 }
