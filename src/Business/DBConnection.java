@@ -339,4 +339,24 @@ public class DBConnection {
         }
         return dataRows.toArray(new Object[0][]);
     }
+
+    public String getUser() {
+        String SQL = "SELECT USER()";
+        String user = "";
+        try(CallableStatement callableStatement = (CallableStatement) DBConnection.getInstance().connection.prepareCall(SQL)) {
+            callableStatement.executeQuery();
+
+            ResultSet rs = callableStatement.getResultSet();
+
+            rs.next();
+
+            user = rs.getString(1);
+
+            ConsoleHelper.printResultSet(rs);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
 }
