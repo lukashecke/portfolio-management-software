@@ -246,6 +246,20 @@ END //
 
 DELIMITER ;
 
+DELIMITER //
+
+CREATE PROCEDURE GetAssetInvestments(
+	IN portfolio_Id INT,
+	IN asset_Id INT
+)
+BEGIN
+	SELECT *
+	FROM investment
+	WHERE investment.Portfolio_Id = portfolio_Id AND investment.Asset_Id = asset_Id;
+END //
+
+DELIMITER ;
+
 -- -----------------------------------------------------
 -- Assets
 -- -----------------------------------------------------

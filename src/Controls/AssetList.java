@@ -15,7 +15,7 @@ public class AssetList<Asset> extends JList {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 if (evt.getClickCount() == 2) {
                     Models.Asset selectedAsset = (Models.Asset)getSelectedValue();
-                    var window = new InvestmentsWindow();
+                    var window = new InvestmentsWindow(selectedAsset);
                     var title = selectedAsset.getName() + " (" + selectedAsset.getShortName() + ")";
                     window.showWindow(title, 900, 450);
                 }

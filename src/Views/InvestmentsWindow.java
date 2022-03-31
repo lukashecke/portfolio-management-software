@@ -1,5 +1,8 @@
 package Views;
 
+import Business.DBConnection;
+import Models.Asset;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.Font;
@@ -7,6 +10,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
 public class InvestmentsWindow extends BaseWindow {
+
+	private Models.Asset asset;
 
 	private Container container;
 
@@ -25,8 +30,10 @@ public class InvestmentsWindow extends BaseWindow {
 
 	private JButton submitButton;
 
-	public InvestmentsWindow() {
+	public InvestmentsWindow(Asset selectedAsset) {
 		super();
+
+		this.asset = selectedAsset;
 
 		setComponents();
 	}
@@ -58,8 +65,8 @@ public class InvestmentsWindow extends BaseWindow {
 		messageShortName = new JLabel("Abkürzung");
 		messageShortName.setFont(new Font("Courier", Font.PLAIN, 12));
 
-		assetNameField = new JTextField();
-		assetShortNameField = new JTextField();
+		assetNameField = new JTextField(asset.getName());
+		assetShortNameField = new JTextField(asset.getShortName());
 		submitButton = new JButton("SPEICHERN");
 
 		GridBagConstraints c = new GridBagConstraints();
@@ -104,16 +111,9 @@ public class InvestmentsWindow extends BaseWindow {
 		assetPanel.add(submitButton, c);
 
 		{
-			String[] index = new String[]{"Investitionssumme", "Investitionsdatum"};
-			JFrame frame = new JFrame("Investments");
-			JLabel label = new JLabel("Bitcoin", JLabel.CENTER);
-			Object[][] data = new Object[][]{
-					{"Investitionssumme", "Investitionsdatum"},
-					{"20 €", "2022.03.28"},
-					{"60 €", "2022.03.09"},
-					{"30 €", "2022.02.16"},
-			};
-			DefaultTableModel tableModel = new DefaultTableModel(data, index);
+			Object[][] data;
+			data = DBConnection.getInstance().getAssetInvestments(asset.getId());
+			DefaultTableModel tableModel = new DefaultTableModel(data, data[0]);
 
 			JTable assetTable = new JTable(tableModel);
 
