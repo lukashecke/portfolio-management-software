@@ -45,6 +45,8 @@ public class DBConnection {
      */
     public Connection connection;
 
+    public final static String ADMIN = "Administrator@localhost";
+
     /**
      * Baut eine Datenbankverbindung zur übergebenen Datenbank auf.
      * Eine .properties Datei mit dem Namen der dieser Datenbank muss dafür im Ordner properties hinterlegt sein.
@@ -358,5 +360,13 @@ public class DBConnection {
             e.printStackTrace();
         }
         return user;
+    }
+
+    /**
+     * Gibt zurück ob der Aktuelle Benutzer auf der Datenbank Admin-Rechte hat.
+     * @return
+     */
+    public Boolean isAdmin() {
+        return DBConnection.getInstance().getUser().equals(DBConnection.ADMIN);
     }
 }

@@ -38,6 +38,17 @@ public class InvestmentsWindow extends BaseWindow {
 		setComponents();
 	}
 
+	private void userValidationForComponents() {
+		if (DBConnection.getInstance().isAdmin()) {
+			assetNameField.setEnabled(true);
+			assetShortNameField.setEnabled(true);
+		} else {
+			assetNameField.setEnabled(false);
+			assetShortNameField.setEnabled(false);
+			submitButton.setVisible(false);
+		}
+	}
+
 	private void setComponents() {
 
 		container = getContentPane();
@@ -68,6 +79,8 @@ public class InvestmentsWindow extends BaseWindow {
 		assetNameField = new JTextField(asset.getName());
 		assetShortNameField = new JTextField(asset.getShortName());
 		submitButton = new JButton("SPEICHERN");
+
+		userValidationForComponents();
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridwidth = GridBagConstraints.RELATIVE;
