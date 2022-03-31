@@ -307,4 +307,40 @@ public class DBConnection {
         }
         return dataRows.toArray(new Object[0][]);
     }
+
+    public Object[][] getAssetInvestmentsPresentation(int id) {
+        String SQL = "{call GetAssetInvestmentsPresentation(1, "+ id +")}";
+
+        ArrayList<String[]> dataRows = new ArrayList<>();
+
+        try(CallableStatement callableStatement = (CallableStatement) DBConnection.getInstance().connection.prepareCall(SQL)) {
+            callableStatement.executeQuery();
+
+            ResultSet rs = callableStatement.getResultSet();
+
+            var columnCount = rs.getMetaData().getColumnCount();
+
+            // Spaltennamen
+            var headers = new String[columnCount];
+            for (int j = 1; j <= columnCount; j++) {
+                headers[j - 1] = rs.getMetaData().getColumnName(j);
+            }
+            dataRows.add(headers);
+
+            // Daten
+            while (rs.next()) {
+                String[] record = new String[columnCount];
+                for (int i = 0; i < columnCount; i++) {
+                    record[i] = rs.getString(i + 1);
+                }
+                dataRows.add(record);
+            }
+
+            ConsoleHelper.printResultSet(rs);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return dataRows.toArray(new Object[0][]);
+    }
 }

@@ -260,6 +260,23 @@ END //
 
 DELIMITER ;
 
+DELIMITER //
+
+CREATE PROCEDURE GetAssetInvestmentsPresentation(
+	IN portfolio_Id INT,
+	IN asset_Id INT
+)
+BEGIN
+	SET lc_time_names = 'de_DE';
+
+    SELECT investment.PurchasePrice AS 'Investitionssumme in €', DATE_FORMAT(history.TimeStamp, '%d. %M %Y') AS 'Investitionsdatum'
+    FROM investment
+    LEFT JOIN history ON investment.History_Id = history.Id
+    WHERE investment.Portfolio_Id = portfolio_Id AND investment.Asset_Id = asset_Id;
+END //
+
+DELIMITER ;
+
 -- -----------------------------------------------------
 -- Assets
 -- -----------------------------------------------------

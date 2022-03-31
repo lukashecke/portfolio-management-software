@@ -112,7 +112,7 @@ public class InvestmentsWindow extends BaseWindow {
 
 		{
 			Object[][] data;
-			data = DBConnection.getInstance().getAssetInvestments(asset.getId());
+			data = DBConnection.getInstance().getAssetInvestmentsPresentation(asset.getId());
 			DefaultTableModel tableModel = new DefaultTableModel(data, data[0]);
 
 			JTable assetTable = new JTable(tableModel);
