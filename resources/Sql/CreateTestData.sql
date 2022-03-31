@@ -98,3 +98,22 @@ VALUES (5, 1, 2, 3, 5, 50.00, 1.00);
 
 INSERT INTO investment (Id, Portfolio_Id, Platform_Id, Asset_Id, History_Id, PurchasePrice, TransactionFee)
 VALUES (6, 1, 3, 4, 6, 50.00, 1.00);
+
+-- -----------------------------------------------------
+-- Benutzer und Berechtigungen
+-- -----------------------------------------------------
+DROP USER IF EXISTS 'Administrator'@'localhost';
+CREATE USER  IF NOT EXISTS 'Administrator'@'localhost' IDENTIFIED BY '1234';
+GRANT ALL PRIVILEGES ON firestocks.* TO 'Administrator'@'localhost';
+FLUSH PRIVILEGES;
+
+DROP USER IF EXISTS 'Benutzer'@'localhost';
+CREATE USER  IF NOT EXISTS 'Benutzer'@'localhost' IDENTIFIED BY '0000';
+GRANT SELECT ON firestocks.* TO 'Benutzer'@'localhost';
+GRANT EXECUTE ON PROCEDURE firestocks.GetInvestedAssets TO 'Benutzer'@'localhost';
+GRANT EXECUTE ON PROCEDURE firestocks.GetType TO 'Benutzer'@'localhost';
+GRANT EXECUTE ON PROCEDURE firestocks.GetInfo TO 'Benutzer'@'localhost';
+GRANT EXECUTE ON PROCEDURE firestocks.GetInvestedSumForAsset TO 'Benutzer'@'localhost';
+GRANT EXECUTE ON PROCEDURE firestocks.GetAssetInvestmentsPresentation TO 'Benutzer'@'localhost';
+GRANT EXECUTE ON PROCEDURE firestocks.GetAssets TO 'Benutzer'@'localhost';
+FLUSH PRIVILEGES;
