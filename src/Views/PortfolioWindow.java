@@ -1,5 +1,6 @@
 package Views;
 
+import Business.DBConnection;
 import Controls.AssetList;
 
 import javax.swing.*;
@@ -9,6 +10,7 @@ public class PortfolioWindow extends BaseWindow {
     private Container container;
 
     JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP,JTabbedPane.SCROLL_TAB_LAYOUT);
+    JPanel infoPanel = new JPanel();
 
     private AssetList investedETFs = new AssetList();
     private AssetList investedCrypto = new AssetList();
@@ -25,6 +27,13 @@ public class PortfolioWindow extends BaseWindow {
         tabbedPane.addTab("Edelmetalle", investedMetals);
 
         container.add(tabbedPane, BorderLayout.CENTER);
+
+        infoPanel.setLayout(new BorderLayout());
+        infoPanel.add(new JLabel("Gesamtinvestition:"), BorderLayout.WEST);
+        infoPanel.add(new JLabel(DBConnection.getInstance().getTotalInvestment()), BorderLayout.CENTER);
+        infoPanel.add(new JLabel("+ 50 € (2)"), BorderLayout.EAST);
+        container.add(infoPanel, BorderLayout.NORTH);
+
         JPanel buttonPane = new JPanel();
         buttonPane.setLayout(new BorderLayout());
         JButton button = new JButton("Neues Investment");

@@ -261,4 +261,14 @@ public class DBConnection {
             e.printStackTrace();
         }
     }
+
+    public String getTotalInvestment() {
+        double sum = 0;
+        var assets = GetInvestedAssets();
+        for (Asset asset :
+                assets) {
+            sum += getInvestedSumForAsset(asset.getId());
+        }
+        return "" + sum;
+    }
 }
