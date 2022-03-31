@@ -17,7 +17,7 @@ public class AssetList<Asset> extends JList {
                     Models.Asset selectedAsset = (Models.Asset)getSelectedValue();
                     var window = new InvestmentsWindow();
                     var title = selectedAsset.getName() + " (" + selectedAsset.getShortName() + ")";
-                    window.showWindow(title, 320, 200);
+                    window.showWindow(title, 900, 450);
                 }
             }
         });
