@@ -116,4 +116,5 @@ GRANT EXECUTE ON PROCEDURE firestocks.GetInfo TO 'Benutzer'@'localhost';
 GRANT EXECUTE ON PROCEDURE firestocks.GetInvestedSumForAsset TO 'Benutzer'@'localhost';
 GRANT EXECUTE ON PROCEDURE firestocks.GetAssetInvestmentsPresentation TO 'Benutzer'@'localhost';
 GRANT EXECUTE ON PROCEDURE firestocks.GetAssets TO 'Benutzer'@'localhost';
+GRANT EXECUTE ON PROCEDURE firestocks.CreateNewInvestment TO 'Benutzer'@'localhost';
 FLUSH PRIVILEGES;
