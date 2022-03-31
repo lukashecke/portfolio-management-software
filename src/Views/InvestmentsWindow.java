@@ -6,6 +6,8 @@ import Models.Asset;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.Font;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
@@ -29,6 +31,9 @@ public class InvestmentsWindow extends BaseWindow {
 	private JTextField assetShortNameField;
 
 	private JButton submitButton;
+	private JButton deleteButton;
+
+	private JTable assetTable;
 
 	public InvestmentsWindow(Asset selectedAsset) {
 		super();
@@ -36,21 +41,11 @@ public class InvestmentsWindow extends BaseWindow {
 		this.asset = selectedAsset;
 
 		setComponents();
-	}
 
-	private void userValidationForComponents() {
-		if (DBConnection.getInstance().isAdmin()) {
-			assetNameField.setEnabled(true);
-			assetShortNameField.setEnabled(true);
-		} else {
-			assetNameField.setEnabled(false);
-			assetShortNameField.setEnabled(false);
-			submitButton.setVisible(false);
-		}
+		userValidationForComponents();
 	}
 
 	private void setComponents() {
-
 		container = getContentPane();
 		container.setLayout(new GridLayout(1,2));
 
@@ -79,8 +74,6 @@ public class InvestmentsWindow extends BaseWindow {
 		assetNameField = new JTextField(asset.getName());
 		assetShortNameField = new JTextField(asset.getShortName());
 		submitButton = new JButton("SPEICHERN");
-
-		userValidationForComponents();
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridwidth = GridBagConstraints.RELATIVE;
@@ -128,7 +121,7 @@ public class InvestmentsWindow extends BaseWindow {
 			data = DBConnection.getInstance().getAssetInvestmentsPresentation(asset.getId());
 			DefaultTableModel tableModel = new DefaultTableModel(data, data[0]);
 
-			JTable assetTable = new JTable(tableModel);
+			assetTable = new JTable(tableModel);
 
 			DefaultTableCellRenderer tableCellRenderer = new DefaultTableCellRenderer();
 
@@ -138,12 +131,40 @@ public class InvestmentsWindow extends BaseWindow {
 			JPanel panel = new JPanel(new BorderLayout());
 			panel.add(assetTable, BorderLayout.CENTER);
 
+			JPanel rightSide = new JPanel();
+			rightSide.setLayout(new BorderLayout());
 			JScrollPane scrollPane = new JScrollPane(panel);
+			deleteButton = new JButton("Löschen");
 
+			rightSide.add(scrollPane, BorderLayout.CENTER);
+			rightSide.add(deleteButton, BorderLayout.SOUTH);
 			// Zusammenbauen der Seite
 			container.add(assetPanel, 0);
-			container.add(scrollPane, 1);
+			container.add(rightSide, 1);
 
+		}
+	}
+
+	private void userValidationForComponents() {
+		deleteButton.setVisible(false);
+		if (DBConnection.getInstance().isAdmin()) {
+			assetNameField.setEnabled(true);
+			assetShortNameField.setEnabled(true);
+			assetTable.setEnabled(true);
+
+			assetTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			ListSelectionModel selectionModel = assetTable.getSelectionModel();
+			selectionModel.addListSelectionListener(new ListSelectionListener() {
+				public void valueChanged(ListSelectionEvent e) {
+					deleteButton.setVisible(true);
+				}
+			});
+		} else {
+			assetNameField.setEnabled(false);
+			assetShortNameField.setEnabled(false);
+			assetTable.setEnabled(false);
+
+			submitButton.setVisible(false);
 		}
 	}
 }
