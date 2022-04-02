@@ -18,7 +18,6 @@ public class PortfolioWindow extends BaseWindow {
 
     private JLabel sumTitle;
     private JLabel profitNonprofit;
-    private JLabel placeHolder;
 
     JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP,JTabbedPane.SCROLL_TAB_LAYOUT);
     JPanel infoPanel = new JPanel();
@@ -54,35 +53,15 @@ public class PortfolioWindow extends BaseWindow {
         links.setLayout(new GridLayout(2,1));
         rechts.setLayout(new BorderLayout());
 
-      //  infoPanel.add(sumTitle, BorderLayout.CENTER);
         sumTitle = new JLabel("Gesamtinvestition:");
         sumTitle.setFont(Constants.MIDDELPLAINFONT);
 
         totalSum.setText(DBConnection.getInstance().getTotalInvestment());
         totalSum.setFont(Constants.MIDDLEFONT);
-      //  infoPanel.add(totalSum, BorderLayout.CENTER);
+
         profitNonprofit = new JLabel("^ 50€ / 2%");
         profitNonprofit.setFont(Constants.LARGEFONT);
-      //  infoPanel.add(new JLabel(), BorderLayout.NORTH);
 
- /*       GridBagConstraints c = new GridBagConstraints();
-        c.gridwidth = GridBagConstraints.CENTER;
-        c.fill = GridBagConstraints.CENTER;
-        c.weightx = 1.0;
-
-        c.gridx = 1;
-        c.gridy = 1;
-        //infoPanel.add(sumTitle, c); // oben links
-
-        c.gridx = 1;
-        c.gridy = 2;
-        c.ipadx=1;
-        //infoPanel.add(profitNonprofit, c); //unten links
-
-        c.gridx = 2;
-        c.gridy = 3;
-        //infoPanel.add(totalSum, c); //oben links column 2
-*/
         links.add(sumTitle, 0);
         links.add(totalSum, 1);
         rechts.add(profitNonprofit, BorderLayout.EAST);
@@ -94,8 +73,8 @@ public class PortfolioWindow extends BaseWindow {
 
         JPanel buttonPane = new JPanel();
         buttonPane.setLayout(new BorderLayout());
-        JButton button = new JButton("Neues Investment");
-        button.setFont(new Font("Courier", Font.BOLD, 20));
+        JButton button = new JButton("+ Neues Investment"); //Hier wird ein Button erzeugt für die neue Investitionen
+        button.setFont(Constants.MIDDLEFONT);
         button.addActionListener((e) -> {
             var window = new AddInvestmentWindow();
             window.showWindow("Neues Investment",750,550);
@@ -109,16 +88,9 @@ public class PortfolioWindow extends BaseWindow {
             });
         });
 
-        JPanel placePanel = new JPanel();
-        placePanel.setLayout(new BorderLayout());
-        placeHolder = new JLabel(" ");
-        placeHolder.setFont(new Font("Courier", Font.BOLD, 120));
-
-        placePanel.add(placeHolder, BorderLayout.PAGE_END);
-        buttonPane.add(button, BorderLayout.CENTER);
-        buttonPane.setBackground(Color.white);
-        container.add(buttonPane, BorderLayout.LINE_END);
-        container.add(placeHolder, BorderLayout.PAGE_END);
+        buttonPane.add(button, BorderLayout.EAST);
+        buttonPane.setBackground(Color.LIGHT_GRAY);
+        container.add(buttonPane, BorderLayout.SOUTH);
     }
 
     public AssetList getInvestedETFs() {
