@@ -3,6 +3,7 @@ package Views;
 import Business.DBConnection;
 import Controls.AssetList;
 import Models.Asset;
+import Utils.Constants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,6 +15,9 @@ import static java.util.stream.Collectors.toList;
 
 public class PortfolioWindow extends BaseWindow {
     private Container container;
+
+    private JLabel sumTitle;
+    private JLabel profitNonprofit;
 
     JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP,JTabbedPane.SCROLL_TAB_LAYOUT);
     JPanel infoPanel = new JPanel();
@@ -35,12 +39,51 @@ public class PortfolioWindow extends BaseWindow {
 
         container.add(tabbedPane, BorderLayout.CENTER);
 
-        infoPanel.setLayout(new BorderLayout());
-        infoPanel.add(new JLabel("Gesamtinvestition:"), BorderLayout.WEST);
+        infoPanel.setLayout(new GridLayout(1, 2)); // schachbrett (brauche ein Panel auf 2 geteilt horizontal)
+
+        JPanel links = new JPanel();
+        JPanel rechts = new JPanel();
+
+        links.setLayout(new GridLayout(2,1));
+        rechts.setLayout(new BorderLayout());
+
+      //  infoPanel.add(sumTitle, BorderLayout.CENTER);
+        sumTitle = new JLabel("Gesamtinvestition:");
+        sumTitle.setFont(Constants.MIDDELPLAINFONT);
+
         totalSum.setText(DBConnection.getInstance().getTotalInvestment());
-        infoPanel.add(totalSum, BorderLayout.CENTER);
-        infoPanel.add(new JLabel("+ 50 € (2)"), BorderLayout.EAST);
-        container.add(infoPanel, BorderLayout.NORTH);
+        totalSum.setFont(Constants.MIDDLEFONT);
+      //  infoPanel.add(totalSum, BorderLayout.CENTER);
+        profitNonprofit = new JLabel("^ 50€ / 2%");
+        profitNonprofit.setFont(Constants.LARGEFONT);
+      //  infoPanel.add(new JLabel(), BorderLayout.NORTH);
+
+ /*       GridBagConstraints c = new GridBagConstraints();
+        c.gridwidth = GridBagConstraints.CENTER;
+        c.fill = GridBagConstraints.CENTER;
+        c.weightx = 1.0;
+
+        c.gridx = 1;
+        c.gridy = 1;
+        //infoPanel.add(sumTitle, c); // oben links
+
+        c.gridx = 1;
+        c.gridy = 2;
+        c.ipadx=1;
+        //infoPanel.add(profitNonprofit, c); //unten links
+
+        c.gridx = 2;
+        c.gridy = 3;
+        //infoPanel.add(totalSum, c); //oben links column 2
+*/
+        links.add(sumTitle, 0);
+        links.add(totalSum, 1);
+        rechts.add(profitNonprofit, BorderLayout.EAST);
+
+        infoPanel.add(links, 0);
+        infoPanel.add(rechts, 1);
+
+        container.add(infoPanel, BorderLayout.PAGE_END);
 
         JPanel buttonPane = new JPanel();
         buttonPane.setLayout(new BorderLayout());
