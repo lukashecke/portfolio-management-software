@@ -214,8 +214,13 @@ public class DBConnection {
             ResultSet rs = callableStatement.getResultSet();
 
             rs.next();
+            try{
 
-            investedSum = rs.getDouble(1);
+                investedSum = rs.getDouble(1);
+            }
+            catch (SQLException ex) {
+                // ConsoleHelper loggt diesen Fehler bereits mit
+            }
 
             ConsoleHelper.printResultSet(rs);
         }
@@ -262,7 +267,7 @@ public class DBConnection {
 
     public String getTotalInvestment() {
         double sum = 0;
-        var assets = GetInvestedAssets();
+        var assets = GetAssets();
         for (Asset asset :
                 assets) {
             sum += getInvestedSumForAsset(asset.getId());

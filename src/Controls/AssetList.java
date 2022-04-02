@@ -29,7 +29,7 @@ public class AssetList<Asset> extends JList {
                         @Override
                         public void windowClosing(WindowEvent e) {
                             var parentWindow = (PortfolioWindow)getAncestorOfClass(BaseWindow.class, getParent());
-                            parentWindow.refresh(DBConnection.getInstance().GetInvestedAssets());
+                            parentWindow.refresh(DBConnection.getInstance().GetAssets());
                             parentWindow.revalidate();
                             parentWindow.repaint();
                         }

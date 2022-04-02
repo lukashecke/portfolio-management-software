@@ -11,7 +11,7 @@ public class PortfolioController {
         this.model = portfolioModel;
         this.view = portfolioWindow;
 
-        this.view.refresh(model.getInvestedAssets());
+        this.view.refresh(model.getAssets());
     }
 
     public void showWindow(String title, int width, int height) {

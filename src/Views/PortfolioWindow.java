@@ -81,7 +81,7 @@ public class PortfolioWindow extends BaseWindow {
             window.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
-                    refresh(DBConnection.getInstance().GetInvestedAssets());
+                    refresh(DBConnection.getInstance().GetAssets());
                     revalidate();
                     repaint();
                 }
