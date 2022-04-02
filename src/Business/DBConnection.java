@@ -324,10 +324,16 @@ public class DBConnection {
             var columnCount = rs.getMetaData().getColumnCount();
 
             // Spaltennamen
+            /*
             var headers = new String[columnCount];
             for (int j = 1; j <= columnCount; j++) {
                 headers[j - 1] = rs.getMetaData().getColumnName(j);
             }
+            dataRows.add(headers);
+             */
+
+            // Leider müssen die Header manuell gesetzt werden, weil gesetzten Spaltennamen mittels "AS" nicht zuverlässig aufgelöst werden.
+            String[] headers = new String[]{"Investitionsnummer" ,"Investitionssumme in €","Investitionsdatum","Plattform"};
             dataRows.add(headers);
 
             // Daten

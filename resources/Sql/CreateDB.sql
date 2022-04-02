@@ -259,9 +259,10 @@ CREATE PROCEDURE GetAssetInvestmentsPresentation(
 BEGIN
 	SET lc_time_names = 'de_DE';
 
-    SELECT investment.Id AS 'Investitionsnummer', investment.PurchasePrice AS 'Investitionssumme in €', DATE_FORMAT(history.TimeStamp, '%d. %M %Y') AS 'Investitionsdatum'
+    SELECT investment.Id AS 'Investitionsnummer', investment.PurchasePrice AS 'Investitionssumme in €', DATE_FORMAT(history.TimeStamp, '%d. %M %Y') AS 'Investitionsdatum', platform.Name AS 'Plattform'
     FROM investment
     LEFT JOIN history ON investment.History_Id = history.Id
+    LEFT JOIN platform ON investment.Platform_Id = platform.Id
     WHERE investment.Portfolio_Id = portfolio_Id AND investment.Asset_Id = asset_Id;
 END //
 
