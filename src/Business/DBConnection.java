@@ -207,7 +207,7 @@ public class DBConnection {
     }
 
     public double getInvestedSumForAsset(int id) {
-        double investedSum = -1;
+        double investedSum = 0;
         String SQL = "{call GetInvestedSumForAsset("+ id+")}";
         try(CallableStatement callableStatement = (CallableStatement) DBConnection.getInstance().connection.prepareCall(SQL)) {
             callableStatement.executeQuery();
@@ -381,5 +381,51 @@ public class DBConnection {
      */
     public Boolean isAdmin() {
         return DBConnection.getInstance().getUser().equals(DBConnection.ADMIN);
+    }
+
+    public void deleteInvestment(int id) {
+        String SQL = "{call DeleteInvestment("+ id +")}";
+        try(CallableStatement callableStatement = (CallableStatement) DBConnection.getInstance().connection.prepareCall(SQL)) {
+            callableStatement.executeQuery();
+
+            // todo: hier kein ResultSet vorhanden, wie geben wir dennoch informationen aus?
+            // ConsoleHelper.printResultSet(rs);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteHistory(int id) {
+        String SQL = "{call DeleteHistory("+ id +")}";
+        try(CallableStatement callableStatement = (CallableStatement) DBConnection.getInstance().connection.prepareCall(SQL)) {
+            callableStatement.executeQuery();
+
+            // todo: hier kein ResultSet vorhanden, wie geben wir dennoch informationen aus?
+            // ConsoleHelper.printResultSet(rs);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int getHistoryIdForInvestment(int investmentId) {
+        String SQL = "{call GetHistoryIdForInvestment("+ investmentId +")}";
+        int historyId = -1;
+        try(CallableStatement callableStatement = (CallableStatement) DBConnection.getInstance().connection.prepareCall(SQL)) {
+            callableStatement.executeQuery();
+
+            ResultSet rs = callableStatement.getResultSet();
+
+            rs.next();
+
+            historyId = rs.getInt(1);
+
+            ConsoleHelper.printResultSet(rs);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return historyId;
     }
 }

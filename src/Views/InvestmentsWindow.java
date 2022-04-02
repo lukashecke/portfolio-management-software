@@ -10,6 +10,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableModel;
 
 public class InvestmentsWindow extends BaseWindow {
 
@@ -164,7 +165,32 @@ public class InvestmentsWindow extends BaseWindow {
 				asset.setName(assetNameField.getText());
 				asset.setShortName(assetShortNameField.getText());
 				DBConnection.getInstance().updateAsset(asset.getId(), asset.getName(), asset.getShortName());
-				refresh();
+				refreshTitle();
+				revalidate();
+				repaint();
+			});
+			deleteButton.addActionListener((e) -> {
+				int[] selectedRows;
+				int investmentId = -1;
+
+				selectedRows = assetTable.getSelectedRows();
+				if (selectedRows.length > 0)
+				{
+					for (int i=0; i < 1; i++) {
+						// get data from JTable
+						TableModel tm = assetTable.getModel();
+						investmentId = Integer.parseInt((String)tm.getValueAt(selectedRows[0],i));
+					}
+				}
+				int historyId = DBConnection.getInstance().getHistoryIdForInvestment(investmentId);
+
+				// Reihenfolge wichtig, weil history nicht gelöscht werden kann, wenn investment noch darauf verweist
+				DBConnection.getInstance().deleteInvestment(investmentId);
+				DBConnection.getInstance().deleteHistory(historyId);
+
+				refreshAssetTable();
+				assetTable.revalidate();
+				assetTable.repaint();
 				revalidate();
 				repaint();
 			});
@@ -177,7 +203,15 @@ public class InvestmentsWindow extends BaseWindow {
 		}
 	}
 
-	private void refresh() {
+	private void refreshAssetTable() {
+		Object[][] data;
+		data = DBConnection.getInstance().getAssetInvestmentsPresentation(asset.getId());
+		DefaultTableModel tableModel = new DefaultTableModel(data, data[0]);
+
+		assetTable.setModel(tableModel);
+	}
+
+	private void refreshTitle() {
 		setTitle(asset.getName() + " (" + asset.getShortName()+ ")");
 	}
 }

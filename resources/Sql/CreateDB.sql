@@ -269,10 +269,23 @@ CREATE PROCEDURE GetAssetInvestmentsPresentation(
 BEGIN
 	SET lc_time_names = 'de_DE';
 
-    SELECT investment.PurchasePrice AS 'Investitionssumme in €', DATE_FORMAT(history.TimeStamp, '%d. %M %Y') AS 'Investitionsdatum'
+    SELECT investment.Id AS 'Investitionsnummer', investment.PurchasePrice AS 'Investitionssumme in €', DATE_FORMAT(history.TimeStamp, '%d. %M %Y') AS 'Investitionsdatum'
     FROM investment
     LEFT JOIN history ON investment.History_Id = history.Id
     WHERE investment.Portfolio_Id = portfolio_Id AND investment.Asset_Id = asset_Id;
+END //
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE PROCEDURE DeleteInvestment(
+	IN investment_Id INT
+)
+BEGIN
+    DELETE
+    FROM investment
+    WHERE investment.Id = investment_Id;
 END //
 
 DELIMITER ;
@@ -412,6 +425,36 @@ BEGIN
 	SELECT *
     FROM info
     WHERE Type_Id = info_Id;
+END //
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- History
+-- -----------------------------------------------------
+
+DELIMITER //
+
+CREATE PROCEDURE DeleteHistory(
+	IN history_Id INT
+)
+BEGIN
+    DELETE
+    FROM history
+    WHERE history.Id = history_Id;
+END //
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE PROCEDURE GetHistoryIdForInvestment(
+	IN investment_Id INT
+)
+BEGIN
+    SELECT investment.History_Id
+    FROM investment
+    WHERE investment.Id = investment_Id;
 END //
 
 DELIMITER ;
