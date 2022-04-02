@@ -278,7 +278,7 @@ END //
 DELIMITER ;
 
 -- -----------------------------------------------------
--- Assets
+-- Asset
 -- -----------------------------------------------------
 DELIMITER //
 
@@ -348,6 +348,21 @@ CREATE PROCEDURE GetAssets()
 BEGIN
 	SELECT *
     FROM asset;
+END //
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE PROCEDURE UpdateAsset(
+    IN asset_Id INT,
+	IN new_name VARCHAR(100),
+	IN new_short_name VARCHAR(10)
+)
+BEGIN
+	UPDATE asset
+    SET asset.Name = new_name, asset.ShortName = new_short_name
+    WHERE asset.Id = asset_Id;
 END //
 
 DELIMITER ;

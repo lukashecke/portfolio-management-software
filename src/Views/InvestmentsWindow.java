@@ -159,6 +159,15 @@ public class InvestmentsWindow extends BaseWindow {
 					deleteButton.setVisible(true);
 				}
 			});
+
+			submitButton.addActionListener((e) -> {
+				asset.setName(assetNameField.getText());
+				asset.setShortName(assetShortNameField.getText());
+				DBConnection.getInstance().updateAsset(asset.getId(), asset.getName(), asset.getShortName());
+				refresh();
+				revalidate();
+				repaint();
+			});
 		} else {
 			assetNameField.setEnabled(false);
 			assetShortNameField.setEnabled(false);
@@ -166,5 +175,9 @@ public class InvestmentsWindow extends BaseWindow {
 
 			submitButton.setVisible(false);
 		}
+	}
+
+	private void refresh() {
+		setTitle(asset.getName() + " (" + asset.getShortName()+ ")");
 	}
 }

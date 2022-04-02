@@ -362,6 +362,19 @@ public class DBConnection {
         return user;
     }
 
+    public void updateAsset(int id, String name, String shortName) {
+        String SQL = "{call UpdateAsset("+ id +", '"+ name+"', '"+ shortName+"')}";
+        try(CallableStatement callableStatement = (CallableStatement) DBConnection.getInstance().connection.prepareCall(SQL)) {
+            callableStatement.executeQuery();
+
+            // todo: hier kein ResultSet vorhanden, wie geben wir dennoch informationen aus?
+            // ConsoleHelper.printResultSet(rs);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Gibt zurück ob der Aktuelle Benutzer auf der Datenbank Admin-Rechte hat.
      * @return
