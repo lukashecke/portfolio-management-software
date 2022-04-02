@@ -213,9 +213,10 @@ public class DBConnection {
             callableStatement.executeQuery();
             ResultSet rs = callableStatement.getResultSet();
 
-            rs.next();
-
-            investedSum = rs.getDouble(1);
+            if (rs.getFetchSize() > 0) {
+                rs.next();
+                investedSum = rs.getDouble(1);
+            }
 
             ConsoleHelper.printResultSet(rs);
         }
@@ -262,7 +263,7 @@ public class DBConnection {
 
     public String getTotalInvestment() {
         double sum = 0;
-        var assets = GetInvestedAssets();
+        var assets = GetAssets();
         for (Asset asset :
                 assets) {
             sum += getInvestedSumForAsset(asset.getId());
