@@ -10,10 +10,10 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Database
 -- -----------------------------------------------------
--- DROP DATABASE IF EXISTS Firestocks;
-CREATE DATABASE Firestocks CHARACTER SET utf8;
+-- DROP DATABASE IF EXISTS gruppeZ;
+CREATE DATABASE gruppeZ CHARACTER SET utf8;
 
-USE Firestocks;
+USE gruppeZ;
 
 -- -----------------------------------------------------
 -- Table `Portfolio`
@@ -143,16 +143,6 @@ CREATE TABLE IF NOT EXISTS `Investment` (
     REFERENCES `History` (`Id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `Config`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Config` (
-  `Id` INT NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`Id`),
-  UNIQUE INDEX `Id_UNIQUE` (`Id` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 

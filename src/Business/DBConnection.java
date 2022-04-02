@@ -45,7 +45,7 @@ public class DBConnection {
      */
     public Connection connection;
 
-    public final static String ADMIN = "Administrator@localhost";
+    public final static String ADMIN = "gruppeZadmin@localhost";
 
     /**
      * Baut eine Datenbankverbindung zur übergebenen Datenbank auf.

@@ -1,4 +1,4 @@
-USE firestocks;
+USE gruppeZ;
 
 -- -----------------------------------------------------
 -- Portfolios
@@ -102,19 +102,19 @@ VALUES (6, 1, 3, 4, 6, 50.00, 1.00);
 -- -----------------------------------------------------
 -- Benutzer und Berechtigungen
 -- -----------------------------------------------------
-DROP USER IF EXISTS 'Administrator'@'localhost';
-CREATE USER  IF NOT EXISTS 'Administrator'@'localhost' IDENTIFIED BY '1234';
-GRANT ALL PRIVILEGES ON firestocks.* TO 'Administrator'@'localhost';
+DROP USER IF EXISTS 'gruppeZadmin'@'localhost';
+CREATE USER  IF NOT EXISTS 'gruppeZadmin'@'localhost' IDENTIFIED BY '1234';
+GRANT ALL PRIVILEGES ON gruppeZ.* TO 'gruppeZadmin'@'localhost';
 FLUSH PRIVILEGES;
 
-DROP USER IF EXISTS 'Benutzer'@'localhost';
-CREATE USER  IF NOT EXISTS 'Benutzer'@'localhost' IDENTIFIED BY '0000';
-GRANT SELECT ON firestocks.* TO 'Benutzer'@'localhost';
-GRANT EXECUTE ON PROCEDURE firestocks.GetInvestedAssets TO 'Benutzer'@'localhost';
-GRANT EXECUTE ON PROCEDURE firestocks.GetType TO 'Benutzer'@'localhost';
-GRANT EXECUTE ON PROCEDURE firestocks.GetInfo TO 'Benutzer'@'localhost';
-GRANT EXECUTE ON PROCEDURE firestocks.GetInvestedSumForAsset TO 'Benutzer'@'localhost';
-GRANT EXECUTE ON PROCEDURE firestocks.GetAssetInvestmentsPresentation TO 'Benutzer'@'localhost';
-GRANT EXECUTE ON PROCEDURE firestocks.GetAssets TO 'Benutzer'@'localhost';
-GRANT EXECUTE ON PROCEDURE firestocks.CreateNewInvestment TO 'Benutzer'@'localhost';
+DROP USER IF EXISTS 'gruppeZuser'@'localhost';
+CREATE USER  IF NOT EXISTS 'gruppeZuser'@'localhost' IDENTIFIED BY '0000';
+GRANT SELECT ON gruppeZ.* TO 'gruppeZuser'@'localhost';
+GRANT EXECUTE ON PROCEDURE gruppeZ.GetInvestedAssets TO 'gruppeZuser'@'localhost';
+GRANT EXECUTE ON PROCEDURE gruppeZ.GetType TO 'gruppeZuser'@'localhost';
+GRANT EXECUTE ON PROCEDURE gruppeZ.GetInfo TO 'gruppeZuser'@'localhost';
+GRANT EXECUTE ON PROCEDURE gruppeZ.GetInvestedSumForAsset TO 'gruppeZuser'@'localhost';
+GRANT EXECUTE ON PROCEDURE gruppeZ.GetAssetInvestmentsPresentation TO 'gruppeZuser'@'localhost';
+GRANT EXECUTE ON PROCEDURE gruppeZ.GetAssets TO 'gruppeZuser'@'localhost';
+GRANT EXECUTE ON PROCEDURE gruppeZ.CreateNewInvestment TO 'gruppeZuser'@'localhost';
 FLUSH PRIVILEGES;
