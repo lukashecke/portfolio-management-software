@@ -213,9 +213,13 @@ public class DBConnection {
             callableStatement.executeQuery();
             ResultSet rs = callableStatement.getResultSet();
 
-            if (rs.getFetchSize() > 0) {
-                rs.next();
+            rs.next();
+            try{
+
                 investedSum = rs.getDouble(1);
+            }
+            catch (SQLException ex) {
+                // ConsoleHelper loggt diesen Fehler bereits mit
             }
 
             ConsoleHelper.printResultSet(rs);
