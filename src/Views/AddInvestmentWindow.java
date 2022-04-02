@@ -3,6 +3,7 @@ package Views;
 import Business.DBConnection;
 import Formatter.DateLabelFormatter;
 import Models.Asset;
+import Utils.Constants;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -48,7 +49,7 @@ public class AddInvestmentWindow extends BaseWindow {
 
 	private void setComponents() {
 		message = new JLabel("Wählen Sie Ihre neue Investition");
-		message.setFont(new Font("Courier", Font.BOLD, 40));
+		message.setFont(Constants.LARGEFONT);
 
 		assetLabel = new JLabel("Asset");
 

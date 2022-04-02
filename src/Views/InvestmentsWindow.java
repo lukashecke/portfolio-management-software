@@ -87,6 +87,7 @@ public class InvestmentsWindow extends BaseWindow {
 		assetShortNameField = new JTextField(asset.getShortName());
 		submitButton = new JButton("SPEICHERN");
 
+		// Anpassung aller Komponente im Grid
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridwidth = GridBagConstraints.RELATIVE;
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -129,6 +130,7 @@ public class InvestmentsWindow extends BaseWindow {
 		assetPanel.add(submitButton, c);
 
 		{
+			// Es wird eine Tabelle erzeugt für die ansicht der Historie
 			Object[][] data;
 			data = DBConnection.getInstance().getAssetInvestmentsPresentation(asset.getId());
 			DefaultTableModel tableModel = new DefaultTableModel(data, data[0]);
