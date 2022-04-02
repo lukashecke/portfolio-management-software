@@ -38,7 +38,7 @@ public class AddInvestmentWindow extends BaseWindow {
 	public AddInvestmentWindow() {
 		super();
 		setComponents();
-		investmentFrame();
+	//	investmentFrame();
 	}
 
 	private void investmentFrame() {

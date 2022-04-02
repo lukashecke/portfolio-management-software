@@ -36,6 +36,12 @@ public class InvestmentsWindow extends BaseWindow {
 
 	private JTable assetTable;
 
+	/**
+	 * Erzeugt die Komponenten für das InvestmentWindow.
+	 * @author  Lukas Hecke
+	 * @author  Namandeep Singh
+	 */
+
 	public InvestmentsWindow(Asset selectedAsset) {
 		super();
 
@@ -45,6 +51,11 @@ public class InvestmentsWindow extends BaseWindow {
 
 		userValidationForComponents();
 	}
+
+	/**
+	 * Setzt alle anzuzeigenden Komponenten im Fenster.
+	 * @author  Namandeep Singh
+	 */
 
 	private void setComponents() {
 		container = getContentPane();
