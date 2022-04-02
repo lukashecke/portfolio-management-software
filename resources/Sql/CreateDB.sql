@@ -10,10 +10,10 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Database
 -- -----------------------------------------------------
--- DROP DATABASE IF EXISTS Firestocks;
-CREATE DATABASE Firestocks CHARACTER SET utf8;
+-- DROP DATABASE IF EXISTS gruppeZ;
+CREATE DATABASE gruppeZ CHARACTER SET utf8;
 
-USE Firestocks;
+USE gruppeZ;
 
 -- -----------------------------------------------------
 -- Table `Portfolio`
@@ -147,16 +147,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Config`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Config` (
-  `Id` INT NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`Id`),
-  UNIQUE INDEX `Id_UNIQUE` (`Id` ASC) VISIBLE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `Label`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Label` (
@@ -269,7 +259,7 @@ CREATE PROCEDURE GetAssetInvestmentsPresentation(
 BEGIN
 	SET lc_time_names = 'de_DE';
 
-    SELECT investment.PurchasePrice AS 'Investitionssumme in €', DATE_FORMAT(history.TimeStamp, '%d. %M %Y') AS 'Investitionsdatum'
+    SELECT investment.Id AS 'Investitionsnummer', investment.PurchasePrice AS 'Investitionssumme in €', DATE_FORMAT(history.TimeStamp, '%d. %M %Y') AS 'Investitionsdatum'
     FROM investment
     LEFT JOIN history ON investment.History_Id = history.Id
     WHERE investment.Portfolio_Id = portfolio_Id AND investment.Asset_Id = asset_Id;
@@ -277,8 +267,21 @@ END //
 
 DELIMITER ;
 
+DELIMITER //
+
+CREATE PROCEDURE DeleteInvestment(
+	IN investment_Id INT
+)
+BEGIN
+    DELETE
+    FROM investment
+    WHERE investment.Id = investment_Id;
+END //
+
+DELIMITER ;
+
 -- -----------------------------------------------------
--- Assets
+-- Asset
 -- -----------------------------------------------------
 DELIMITER //
 
@@ -352,6 +355,21 @@ END //
 
 DELIMITER ;
 
+DELIMITER //
+
+CREATE PROCEDURE UpdateAsset(
+    IN asset_Id INT,
+	IN new_name VARCHAR(100),
+	IN new_short_name VARCHAR(10)
+)
+BEGIN
+	UPDATE asset
+    SET asset.Name = new_name, asset.ShortName = new_short_name
+    WHERE asset.Id = asset_Id;
+END //
+
+DELIMITER ;
+
 -- -----------------------------------------------------
 -- Type
 -- -----------------------------------------------------
@@ -397,6 +415,36 @@ BEGIN
 	SELECT *
     FROM info
     WHERE Type_Id = info_Id;
+END //
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- History
+-- -----------------------------------------------------
+
+DELIMITER //
+
+CREATE PROCEDURE DeleteHistory(
+	IN history_Id INT
+)
+BEGIN
+    DELETE
+    FROM history
+    WHERE history.Id = history_Id;
+END //
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE PROCEDURE GetHistoryIdForInvestment(
+	IN investment_Id INT
+)
+BEGIN
+    SELECT investment.History_Id
+    FROM investment
+    WHERE investment.Id = investment_Id;
 END //
 
 DELIMITER ;

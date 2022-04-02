@@ -45,6 +45,8 @@ public class DBConnection {
      */
     public Connection connection;
 
+    public final static String ADMIN = "gruppeZadmin@localhost";
+
     /**
      * Baut eine Datenbankverbindung zur übergebenen Datenbank auf.
      * Eine .properties Datei mit dem Namen der dieser Datenbank muss dafür im Ordner properties hinterlegt sein.
@@ -205,7 +207,7 @@ public class DBConnection {
     }
 
     public double getInvestedSumForAsset(int id) {
-        double investedSum = -1;
+        double investedSum = 0;
         String SQL = "{call GetInvestedSumForAsset("+ id+")}";
         try(CallableStatement callableStatement = (CallableStatement) DBConnection.getInstance().connection.prepareCall(SQL)) {
             callableStatement.executeQuery();
@@ -249,17 +251,13 @@ public class DBConnection {
         return assets;
     }
 
-    public void createNewInvestment(Asset selectedAsset, int platformId, String selectedDate, double pricePerUnit, double purchasePrice, double transactionFee) {
+    public void createNewInvestment(Asset selectedAsset, int platformId, String selectedDate, double pricePerUnit, double purchasePrice, double transactionFee) throws SQLException {
         String SQL = "{call CreateNewInvestment(1, "+ selectedAsset.getId() +", "+platformId+", "+ selectedDate +", "+pricePerUnit+", "+purchasePrice+", "+transactionFee+")}";
-        try(CallableStatement callableStatement = (CallableStatement) DBConnection.getInstance().connection.prepareCall(SQL)) {
-            callableStatement.executeQuery();
-            ResultSet rs = callableStatement.getResultSet();
+        CallableStatement callableStatement = (CallableStatement) DBConnection.getInstance().connection.prepareCall(SQL);
+        callableStatement.executeQuery();
+        ResultSet rs = callableStatement.getResultSet();
 
-            ConsoleHelper.printResultSet(rs);
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
+        ConsoleHelper.printResultSet(rs);
     }
 
     public String getTotalInvestment() {
@@ -342,5 +340,92 @@ public class DBConnection {
             e.printStackTrace();
         }
         return dataRows.toArray(new Object[0][]);
+    }
+
+    public String getUser() {
+        String SQL = "SELECT USER()";
+        String user = "";
+        try(CallableStatement callableStatement = (CallableStatement) DBConnection.getInstance().connection.prepareCall(SQL)) {
+            callableStatement.executeQuery();
+
+            ResultSet rs = callableStatement.getResultSet();
+
+            rs.next();
+
+            user = rs.getString(1);
+
+            ConsoleHelper.printResultSet(rs);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    public void updateAsset(int id, String name, String shortName) {
+        String SQL = "{call UpdateAsset("+ id +", '"+ name+"', '"+ shortName+"')}";
+        try(CallableStatement callableStatement = (CallableStatement) DBConnection.getInstance().connection.prepareCall(SQL)) {
+            callableStatement.executeQuery();
+
+            // todo: hier kein ResultSet vorhanden, wie geben wir dennoch informationen aus?
+            // ConsoleHelper.printResultSet(rs);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Gibt zurück ob der Aktuelle Benutzer auf der Datenbank Admin-Rechte hat.
+     * @return
+     */
+    public Boolean isAdmin() {
+        return DBConnection.getInstance().getUser().equals(DBConnection.ADMIN);
+    }
+
+    public void deleteInvestment(int id) {
+        String SQL = "{call DeleteInvestment("+ id +")}";
+        try(CallableStatement callableStatement = (CallableStatement) DBConnection.getInstance().connection.prepareCall(SQL)) {
+            callableStatement.executeQuery();
+
+            // todo: hier kein ResultSet vorhanden, wie geben wir dennoch informationen aus?
+            // ConsoleHelper.printResultSet(rs);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteHistory(int id) {
+        String SQL = "{call DeleteHistory("+ id +")}";
+        try(CallableStatement callableStatement = (CallableStatement) DBConnection.getInstance().connection.prepareCall(SQL)) {
+            callableStatement.executeQuery();
+
+            // todo: hier kein ResultSet vorhanden, wie geben wir dennoch informationen aus?
+            // ConsoleHelper.printResultSet(rs);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int getHistoryIdForInvestment(int investmentId) {
+        String SQL = "{call GetHistoryIdForInvestment("+ investmentId +")}";
+        int historyId = -1;
+        try(CallableStatement callableStatement = (CallableStatement) DBConnection.getInstance().connection.prepareCall(SQL)) {
+            callableStatement.executeQuery();
+
+            ResultSet rs = callableStatement.getResultSet();
+
+            rs.next();
+
+            historyId = rs.getInt(1);
+
+            ConsoleHelper.printResultSet(rs);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return historyId;
     }
 }

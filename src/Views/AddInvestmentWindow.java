@@ -2,19 +2,19 @@ package Views;
 
 import Business.DBConnection;
 import Formatter.DateLabelFormatter;
-
-import java.awt.*;
-import javax.swing.*;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Properties;
-
 import Models.Asset;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Properties;
 
 public class AddInvestmentWindow extends BaseWindow {
 
@@ -128,8 +128,17 @@ public class AddInvestmentWindow extends BaseWindow {
 			} catch (NumberFormatException ex) {
 				transactionFeeField.setBorder(BorderFactory.createLineBorder(Color.RED));
 				JOptionPane.showMessageDialog(container, "Sie haben einen ungültigen Wert in eines der Zahlenfelder eingetragen", "Falsche Eingaben", JOptionPane.WARNING_MESSAGE);
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+				// Genauere Unterscheidung notwendig
+				var exceptionHash = ex.getSQLState().hashCode();
+				switch (exceptionHash) {
+					// execute command denied to user...
+					case 49560306 -> JOptionPane.showMessageDialog(container, "Sie haben keine Berechtigung, um diese Aktion durchzuführen. Bitte wenden Sie sich an Ihren Administrator", "Fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
+					// Sonstige Fehler
+					default -> JOptionPane.showMessageDialog(container, ex.getMessage(), "Schwerliegender Fehler", JOptionPane.ERROR_MESSAGE);
+				}
 			}
-
 		});
 		container = getContentPane();
 		container.setLayout(null);

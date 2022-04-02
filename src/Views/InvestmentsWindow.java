@@ -6,8 +6,11 @@ import Models.Asset;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.Font;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableModel;
 
 public class InvestmentsWindow extends BaseWindow {
 
@@ -29,6 +32,9 @@ public class InvestmentsWindow extends BaseWindow {
 	private JTextField assetShortNameField;
 
 	private JButton submitButton;
+	private JButton deleteButton;
+
+	private JTable assetTable;
 
 	public InvestmentsWindow(Asset selectedAsset) {
 		super();
@@ -36,10 +42,11 @@ public class InvestmentsWindow extends BaseWindow {
 		this.asset = selectedAsset;
 
 		setComponents();
+
+		userValidationForComponents();
 	}
 
 	private void setComponents() {
-
 		container = getContentPane();
 		container.setLayout(new GridLayout(1,2));
 
@@ -115,7 +122,7 @@ public class InvestmentsWindow extends BaseWindow {
 			data = DBConnection.getInstance().getAssetInvestmentsPresentation(asset.getId());
 			DefaultTableModel tableModel = new DefaultTableModel(data, data[0]);
 
-			JTable assetTable = new JTable(tableModel);
+			assetTable = new JTable(tableModel);
 
 			DefaultTableCellRenderer tableCellRenderer = new DefaultTableCellRenderer();
 
@@ -125,12 +132,86 @@ public class InvestmentsWindow extends BaseWindow {
 			JPanel panel = new JPanel(new BorderLayout());
 			panel.add(assetTable, BorderLayout.CENTER);
 
+			JPanel rightSide = new JPanel();
+			rightSide.setLayout(new BorderLayout());
 			JScrollPane scrollPane = new JScrollPane(panel);
+			deleteButton = new JButton("Löschen");
 
+			rightSide.add(scrollPane, BorderLayout.CENTER);
+			rightSide.add(deleteButton, BorderLayout.SOUTH);
 			// Zusammenbauen der Seite
 			container.add(assetPanel, 0);
-			container.add(scrollPane, 1);
+			container.add(rightSide, 1);
 
 		}
+	}
+
+	private void userValidationForComponents() {
+		deleteButton.setVisible(false);
+		if (DBConnection.getInstance().isAdmin()) {
+			assetNameField.setEnabled(true);
+			assetShortNameField.setEnabled(true);
+			assetTable.setEnabled(true);
+
+			assetTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			ListSelectionModel selectionModel = assetTable.getSelectionModel();
+			selectionModel.addListSelectionListener(new ListSelectionListener() {
+				public void valueChanged(ListSelectionEvent e) {
+					deleteButton.setVisible(true);
+				}
+			});
+
+			submitButton.addActionListener((e) -> {
+				asset.setName(assetNameField.getText());
+				asset.setShortName(assetShortNameField.getText());
+				DBConnection.getInstance().updateAsset(asset.getId(), asset.getName(), asset.getShortName());
+				refreshTitle();
+				revalidate();
+				repaint();
+			});
+			deleteButton.addActionListener((e) -> {
+				int[] selectedRows;
+				int investmentId = -1;
+
+				selectedRows = assetTable.getSelectedRows();
+				if (selectedRows.length > 0)
+				{
+					for (int i=0; i < 1; i++) {
+						// get data from JTable
+						TableModel tm = assetTable.getModel();
+						investmentId = Integer.parseInt((String)tm.getValueAt(selectedRows[0],i));
+					}
+				}
+				int historyId = DBConnection.getInstance().getHistoryIdForInvestment(investmentId);
+
+				// Reihenfolge wichtig, weil history nicht gelöscht werden kann, wenn investment noch darauf verweist
+				DBConnection.getInstance().deleteInvestment(investmentId);
+				DBConnection.getInstance().deleteHistory(historyId);
+
+				refreshAssetTable();
+				assetTable.revalidate();
+				assetTable.repaint();
+				revalidate();
+				repaint();
+			});
+		} else {
+			assetNameField.setEnabled(false);
+			assetShortNameField.setEnabled(false);
+			assetTable.setEnabled(false);
+
+			submitButton.setVisible(false);
+		}
+	}
+
+	private void refreshAssetTable() {
+		Object[][] data;
+		data = DBConnection.getInstance().getAssetInvestmentsPresentation(asset.getId());
+		DefaultTableModel tableModel = new DefaultTableModel(data, data[0]);
+
+		assetTable.setModel(tableModel);
+	}
+
+	private void refreshTitle() {
+		setTitle(asset.getName() + " (" + asset.getShortName()+ ")");
 	}
 }
