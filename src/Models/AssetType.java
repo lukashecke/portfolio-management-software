@@ -19,6 +19,10 @@ public class AssetType {
     private String info;
     private String description;
 
+    /**
+     * Gibt die investierten Asset-Typen zurück.
+     * @return Liste der investierten Asset-Typen
+     */
     public static ArrayList<AssetType> GetInvestedAssetTypes() {
         ArrayList<AssetType> assetTypes = new ArrayList<>();
         String SQL = "{call GetInvestedAssetTypes(1)}";
@@ -43,13 +47,13 @@ public class AssetType {
         return assetTypes;
     }
 
-
-
-
     @Override
     public String toString() {
         return this.getName();
     }
+
+
+    // Getter und Setter
 
     public int getId() {
         return id;

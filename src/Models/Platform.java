@@ -23,7 +23,9 @@ public class Platform {
         this.name = name;
     }
 
-    // Datenbankaufrufe
+    /**
+     * Gibt alle Plattformen zurück.
+     */
     public static ArrayList<Platform> GetPlatforms() {
         ArrayList<Platform> platforms = new ArrayList<>();
         String SQL = "{call GetPlatforms()}";
@@ -46,6 +48,11 @@ public class Platform {
         return platforms;
     }
 
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
     // Getter und Setter
     public int getId() {
         return id;
@@ -58,11 +65,5 @@ public class Platform {
     }
     public void setName(String name) {
         this.name = name;
-    }
-
-    // ToString
-    @Override
-    public String toString() {
-        return this.name;
     }
 }

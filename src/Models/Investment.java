@@ -12,8 +12,18 @@ import java.util.ArrayList;
  * Abbildung eines Investments (Einkauf eines Assets).
  */
 public class Investment {
-    private Platform platform;
 
+    /**
+     * Erzeugt eine neue Investition
+     * @param asset Investiertes Asset
+     * @param platform Plattform auf der eingekauft wurde
+     * @param selectedDate Einkaufsdatum
+     * @param pricePerUnit eingekaufter Kurs
+     * @param purchasePrice eingekaufter Mengenpreis
+     * @param transactionFee Transaktionskosten
+     * @author Lukas Hecke
+     * @throws SQLException
+     */
     public static void createNewInvestment(Asset asset, Platform platform, String selectedDate, double pricePerUnit, double purchasePrice, double transactionFee) throws SQLException {
         String SQL = "{call CreateNewInvestment(1, "+ asset.getId() +", "+platform.getId()+", "+ selectedDate +", "+pricePerUnit+", "+purchasePrice+", "+transactionFee+")}";
         CallableStatement callableStatement = (CallableStatement) DBConnection.getInstance().connection.prepareCall(SQL);
@@ -23,6 +33,12 @@ public class Investment {
         ConsoleHelper.printResultSet(rs);
     }
 
+    /**
+     * Gibt die Investitionen eines bestimmten Assets in einem anzeigefähigen Format aus (für z.B. JTable).
+     * @param id Asset-ID
+     * @return 2 Dimensionales Array
+     * @author Lukas Hecke
+     */
     public static Object[][] getAssetInvestmentsPresentation(int id) {
         String SQL = "{call GetAssetInvestmentsPresentation(1, "+ id +")}";
 
@@ -65,6 +81,12 @@ public class Investment {
         return dataRows.toArray(new Object[0][]);
     }
 
+    /**
+     * Gibt die Investitionen eines bestimmten Assets zurück (für z.B. JTable).
+     * @param id Asset-ID
+     * @return 2 Dimensionales Array
+     * @author Lukas Hecke
+     */
     public static Object[][] getAssetInvestments(int id) {
         String SQL = "{call GetAssetInvestments(1, "+ id +")}";
 
@@ -101,6 +123,11 @@ public class Investment {
         return dataRows.toArray(new Object[0][]);
     }
 
+    /**
+     * Gibt die Gesamtinvestitionssumme des Portfolios zurück
+     * @return Investitionssumme als String
+     * @author Lukas Hecke
+     */
     public static String getTotalInvestment() {
         double sum = 0;
         var assets = Asset.getAssets();

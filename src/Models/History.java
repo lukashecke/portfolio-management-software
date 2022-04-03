@@ -12,6 +12,11 @@ import java.sql.SQLException;
  */
 public class History {
 
+    /**
+     * Gibt die Kurs-Id für das übergeben Investment zurück.
+     * @param investmentId Investment-ID
+     * @return History-ID
+     */
     public static int getHistoryIdForInvestment(int investmentId) {
         String SQL = "{call GetHistoryIdForInvestment("+ investmentId +")}";
         int historyId = -1;
@@ -32,6 +37,10 @@ public class History {
         return historyId;
     }
 
+    /**
+     * Löscht den Kurs-Eintrag mit der übergebenen ID.
+     * @param id Kurs-ID
+     */
     public static void deleteHistory(int id) {
         String SQL = "{call DeleteHistory("+ id +")}";
         try(CallableStatement callableStatement = (CallableStatement) DBConnection.getInstance().connection.prepareCall(SQL)) {

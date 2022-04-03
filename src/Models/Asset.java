@@ -17,6 +17,12 @@ public class Asset {
     private String shortName;
     private AssetType type;
 
+    /**
+     * Aktualisieren eines Assets
+     * @param id Asset-ID
+     * @param name Name des Assets
+     * @param shortName Abkürzung des Assets
+     */
     public static void updateAsset(int id, String name, String shortName) {
         String SQL = "{call UpdateAsset("+ id +", '"+ name+"', '"+ shortName+"')}";
         try(CallableStatement callableStatement = (CallableStatement) DBConnection.getInstance().connection.prepareCall(SQL)) {
@@ -30,6 +36,11 @@ public class Asset {
         }
     }
 
+    /**
+     * Holt einen Asset anhand der übergebenen ID.
+     * @param id Asset-ID
+     * @return Asset
+     */
     public static Asset getAssetById(int id){
         Asset asset = new Asset();
         String SQL = "{call GetAsset("+id+")}";
@@ -84,6 +95,11 @@ public class Asset {
         return assets;
     }
 
+    /**
+     * Gibt die investierte Summe eines Assets zurück.
+     * @param id Asset-ID
+     * @return Investierte Summe
+     */
     public static double getInvestedSumForAsset(int id) {
         double investedSum = 0;
         String SQL = "{call GetInvestedSumForAsset("+ id+")}";
@@ -108,6 +124,10 @@ public class Asset {
         return investedSum;
     }
 
+    /**
+     * Gibt nur die Assets zurück in die investiert wurde.
+     * @return Liste der Assets
+     */
     public static ArrayList<Asset> getInvestedAssets() {
         ArrayList<Asset> assets = new ArrayList<>();
         String SQL = "{call GetInvestedAssets(1)}";
@@ -134,6 +154,11 @@ public class Asset {
         return assets;
     }
 
+    /**
+     * Gibt alle Assets zurück, die einem bestimmten Typ entsprechen.
+     * @param id AssetType-ID
+     * @return Liste an Assets
+     */
     public static AssetType getAssetTypeById(int id){
         AssetType assetType = new AssetType();
         String SQL = "{call GetType("+id+")}";
@@ -174,6 +199,12 @@ public class Asset {
         return assetType;
     }
 
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
+    // Getter und Setter
     public int getId() {
         return id;
     }
@@ -204,10 +235,5 @@ public class Asset {
 
     public void setType(AssetType type) {
         this.type = type;
-    }
-
-    @Override
-    public String toString() {
-        return this.name;
     }
 }
