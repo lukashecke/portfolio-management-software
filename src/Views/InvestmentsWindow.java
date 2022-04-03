@@ -2,6 +2,7 @@ package Views;
 
 import Business.DBConnection;
 import Models.Asset;
+import Utils.Constants;
 import Models.History;
 import Models.Investment;
 
@@ -68,22 +69,22 @@ public class InvestmentsWindow extends BaseWindow {
 		//assetNameField = new JTextField();
 
 		message = new JLabel("Editieren einer Anlage ");
-		message.setFont(new Font("Courier", Font.BOLD, 28));
+		message.setFont(Constants.MIDDLEFONT);
 
 		placeHolder = new JLabel(" ");
-		placeHolder.setFont(new Font("Courier", Font.BOLD, 120));
+		placeHolder.setFont(Constants.MIDDLELARGEFONT);
 
 		placeHolder1 = new JLabel(" ");
-		placeHolder1.setFont(new Font("Courier", Font.BOLD, 30));
+		placeHolder1.setFont(Constants.MIDDLEFONT);
 
 		placeHolder2 = new JLabel(" ");
-		placeHolder2.setFont(new Font("Courier", Font.BOLD, 30));
+		placeHolder2.setFont(Constants.MIDDLEFONT);
 
 		messageName = new JLabel("Name");
-		messageName.setFont(new Font("Courier", Font.PLAIN, 12));
+		messageName.setFont(Constants.EXTRASMALLFONT);
 
 		messageShortName = new JLabel("Abkürzung");
-		messageShortName.setFont(new Font("Courier", Font.PLAIN, 12));
+		messageShortName.setFont(Constants.EXTRASMALLFONT);
 
 		assetNameField = new JTextField(asset.getName());
 		assetShortNameField = new JTextField(asset.getShortName());
