@@ -28,7 +28,7 @@ public class Asset {
         try(CallableStatement callableStatement = (CallableStatement) DBConnection.getInstance().connection.prepareCall(SQL)) {
             callableStatement.executeQuery();
 
-            // todo: hier kein ResultSet vorhanden, wie geben wir dennoch informationen aus?
+            // hier kein ResultSet zum Ausgeben vorhanden
             // ConsoleHelper.printResultSet(rs);
         }
         catch (SQLException e) {

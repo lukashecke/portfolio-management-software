@@ -18,7 +18,6 @@ public class AssetListCellRenderer implements ListCellRenderer<Asset> {
         double investedSum = Asset.getInvestedSumForAsset(value.getId());
         JLabel investmentSumLabel = new JLabel(investedSum + "€");
         panel.add(nameLabel, BorderLayout.WEST);
-        // TODO: hier total investment summe aus neuer prepared statement
         panel.add(investmentSumLabel, BorderLayout.EAST);
 
 
