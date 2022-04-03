@@ -1,8 +1,8 @@
 package Views;
 
-import Business.DBConnection;
 import Formatter.DateLabelFormatter;
 import Models.Asset;
+import Models.Investment;
 import Models.Platform;
 import Utils.Constants;
 import org.jdatepicker.impl.JDatePanelImpl;
@@ -57,7 +57,7 @@ public class AddInvestmentWindow extends BaseWindow {
 
 		assetLabel = new JLabel("Asset");
 
-		var assets = DBConnection.getInstance().GetAssets();
+		var assets = Models.Asset.getAssets();
 
 		assetComboBox = new JComboBox<Asset>();
 		for (Asset asset:assets) {
@@ -138,7 +138,7 @@ public class AddInvestmentWindow extends BaseWindow {
 				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 				String formattedDateText = formatter.format(selectedDate);
 
-				DBConnection.getInstance().createNewInvestment(selectedAsset, selectedPlatform, "\""+formattedDateText+"\"", pricePerUnit, purchasePrice, transactionFee);
+				Investment.createNewInvestment(selectedAsset, selectedPlatform, "\""+formattedDateText+"\"", pricePerUnit, purchasePrice, transactionFee);
 
 				JOptionPane.showMessageDialog(container, "Neues Investment erfolgreich gespeichert", "Anlegen erfolgreich", JOptionPane.INFORMATION_MESSAGE);
 				// this.exit();

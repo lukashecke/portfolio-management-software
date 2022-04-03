@@ -15,6 +15,7 @@ import java.sql.SQLException;
 public class ConsoleHelper {
     /**
      * Gibt das resultset als formatierte Tabelle aus.
+     * Wenn das Programm vom Administrator ausgeführt wird, wird das Log zusätzlich in der Oberfläche mit ausgegeben.
      * @param resultSet resultset mit den Ergebnissen
      * @author Lukas Hecke
      * @throws SQLException wenn Verbindung zur Datenbank fehlschlägt
@@ -37,6 +38,7 @@ public class ConsoleHelper {
         }
         System.out.println(t.render());
 
+        // Ausgabe in der Oberfläche
         PortfolioWindow portfolioWindow = null;
         if (true) {
             Window[] windows = Window.getWindows();

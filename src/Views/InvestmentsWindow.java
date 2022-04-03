@@ -2,6 +2,8 @@ package Views;
 
 import Business.DBConnection;
 import Models.Asset;
+import Models.History;
+import Models.Investment;
 
 import javax.swing.*;
 import java.awt.*;
@@ -132,7 +134,7 @@ public class InvestmentsWindow extends BaseWindow {
 		{
 			// Es wird eine Tabelle erzeugt für die ansicht der Historie
 			Object[][] data;
-			data = DBConnection.getInstance().getAssetInvestmentsPresentation(asset.getId());
+			data = Investment.getAssetInvestmentsPresentation(asset.getId());
 			DefaultTableModel tableModel = new DefaultTableModel(data, data[0]);
 
 			assetTable = new JTable(tableModel);
@@ -177,7 +179,7 @@ public class InvestmentsWindow extends BaseWindow {
 			submitButton.addActionListener((e) -> {
 				asset.setName(assetNameField.getText());
 				asset.setShortName(assetShortNameField.getText());
-				DBConnection.getInstance().updateAsset(asset.getId(), asset.getName(), asset.getShortName());
+				Asset.updateAsset(asset.getId(), asset.getName(), asset.getShortName());
 				refreshTitle();
 				revalidate();
 				repaint();
@@ -195,11 +197,11 @@ public class InvestmentsWindow extends BaseWindow {
 						investmentId = Integer.parseInt((String)tm.getValueAt(selectedRows[0],i));
 					}
 				}
-				int historyId = DBConnection.getInstance().getHistoryIdForInvestment(investmentId);
+				int historyId = History.getHistoryIdForInvestment(investmentId);
 
 				// Reihenfolge wichtig, weil history nicht gelöscht werden kann, wenn investment noch darauf verweist
 				DBConnection.getInstance().deleteInvestment(investmentId);
-				DBConnection.getInstance().deleteHistory(historyId);
+				History.deleteHistory(historyId);
 
 				refreshAssetTable();
 				assetTable.revalidate();
@@ -218,7 +220,7 @@ public class InvestmentsWindow extends BaseWindow {
 
 	private void refreshAssetTable() {
 		Object[][] data;
-		data = DBConnection.getInstance().getAssetInvestmentsPresentation(asset.getId());
+		data = Investment.getAssetInvestmentsPresentation(asset.getId());
 		DefaultTableModel tableModel = new DefaultTableModel(data, data[0]);
 
 		assetTable.setModel(tableModel);

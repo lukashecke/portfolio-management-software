@@ -1,19 +1,31 @@
 package Controllers;
 
-import Models.PortfolioModel;
+import Models.Asset;
 import Views.PortfolioWindow;
 
+import java.util.ArrayList;
+
+/**
+ * Controller für das ProtfolioWindow.
+ */
 public class PortfolioController {
-    private PortfolioModel model;
+    // View
     private PortfolioWindow view;
+    // Model
+    private ArrayList<Asset> assetTypes;
 
-    public PortfolioController(PortfolioModel portfolioModel, PortfolioWindow portfolioWindow) {
-        this.model = portfolioModel;
+    public PortfolioController(PortfolioWindow portfolioWindow) {
         this.view = portfolioWindow;
-
-        this.view.refresh(model.getAssets());
+        assetTypes = Asset.getAssets();
+        this.view.refresh(assetTypes);
     }
 
+    /**
+     * Zeigt Fenster an.
+     * @param title Titel des Fensters
+     * @param width Breite des Fensters
+     * @param height Höhe des Fensters
+     */
     public void showWindow(String title, int width, int height) {
         view.showWindow(title,width,height);
     }

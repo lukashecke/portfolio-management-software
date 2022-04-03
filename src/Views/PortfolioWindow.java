@@ -3,6 +3,7 @@ package Views;
 import Business.DBConnection;
 import Controls.AssetList;
 import Models.Asset;
+import Models.Investment;
 import Utils.Constants;
 
 import javax.swing.*;
@@ -67,7 +68,7 @@ public class PortfolioWindow extends BaseWindow {
         sumTitle = new JLabel("Gesamtinvestition:");
         sumTitle.setFont(Constants.MIDDELPLAINFONT);
 
-        totalSum.setText(DBConnection.getInstance().getTotalInvestment());
+        totalSum.setText(Investment.getTotalInvestment());
         totalSum.setFont(Constants.MIDDLEFONT);
 
         links.add(sumTitle, 0);
@@ -88,7 +89,7 @@ public class PortfolioWindow extends BaseWindow {
             window.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
-                    refresh(DBConnection.getInstance().GetAssets());
+                    refresh(Models.Asset.getAssets());
                     revalidate();
                     repaint();
                 }
@@ -142,7 +143,7 @@ public class PortfolioWindow extends BaseWindow {
         this.getInvestedMetals().repaint();
 
         // Übersicht
-        this.totalSum.setText("       " + DBConnection.getInstance().getTotalInvestment() + " €");
+        this.totalSum.setText("       " + Investment.getTotalInvestment() + " €");
         this.totalSum.repaint();
     }
 }

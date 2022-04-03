@@ -1,5 +1,13 @@
 package Models;
 
+import Business.DBConnection;
+import Helper.ConsoleHelper;
+import com.mysql.jdbc.CallableStatement;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 /**
 Abbildung eines Asset Typs (z.B. Einzelaktien, Krypto, Schwermetalle).
  */
@@ -10,6 +18,33 @@ public class AssetType {
     private Boolean needsIncomeTax;
     private String info;
     private String description;
+
+    public static ArrayList<AssetType> GetInvestedAssetTypes() {
+        ArrayList<AssetType> assetTypes = new ArrayList<>();
+        String SQL = "{call GetInvestedAssetTypes(1)}";
+        try(CallableStatement callableStatement = (CallableStatement) DBConnection.getInstance().connection.prepareCall(SQL)) {
+            callableStatement.executeQuery();
+            ResultSet rs = callableStatement.getResultSet();
+
+            while (rs.next()) {
+                var assetType = new AssetType();
+                assetType.setId(rs.getInt("Id"));
+                assetType.setName(rs.getString("Name"));
+                assetType.setShortName(rs.getString("ShortName"));
+                assetType.setNeedsIncomeTax(rs.getBoolean("NeedsIncomeTax"));
+                assetTypes.add(assetType);
+            }
+
+            ConsoleHelper.printResultSet(rs);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return assetTypes;
+    }
+
+
+
 
     @Override
     public String toString() {

@@ -1,6 +1,5 @@
 package Controls;
 
-import Business.DBConnection;
 import Views.AssetCellRenderer;
 import Views.BaseWindow;
 import Views.InvestmentsWindow;
@@ -29,7 +28,7 @@ public class AssetList<Asset> extends JList {
                         @Override
                         public void windowClosing(WindowEvent e) {
                             var parentWindow = (PortfolioWindow)getAncestorOfClass(BaseWindow.class, getParent());
-                            parentWindow.refresh(DBConnection.getInstance().GetAssets());
+                            parentWindow.refresh(Models.Asset.getAssets());
                             parentWindow.revalidate();
                             parentWindow.repaint();
                         }
