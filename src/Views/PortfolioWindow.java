@@ -17,11 +17,13 @@ public class PortfolioWindow extends BaseWindow {
     private Container container;
 
     private JLabel sumTitle;
-    private JLabel profitNonprofit;
 
+    JPanel content;
     JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP,JTabbedPane.SCROLL_TAB_LAYOUT);
     JPanel infoPanel = new JPanel();
     JLabel totalSum = new JLabel();
+    JScrollPane loggingPane;
+    public JTextArea loggingOutput = new JTextArea();
 
     private AssetList investedETFs = new AssetList();
     private AssetList investedCrypto = new AssetList();
@@ -37,13 +39,21 @@ public class PortfolioWindow extends BaseWindow {
         super();
 
         container = getContentPane();
-        container.setLayout(new BorderLayout());
+        if (DBConnection.getInstance().isAdmin()) {
+            // Nur Admin soll Logging bekommen
+            container.setLayout(new GridLayout(2,1));
+        } else {
+            container.setLayout(new GridLayout(1,1));
+        }
+
+        content = new JPanel();
+        content.setLayout(new BorderLayout());
 
         tabbedPane.addTab("ETFs", investedETFs);
         tabbedPane.addTab("Krypto", investedCrypto);
         tabbedPane.addTab("Edelmetalle", investedMetals);
 
-        container.add(tabbedPane, BorderLayout.CENTER);
+        content.add(tabbedPane, BorderLayout.CENTER);
 
         infoPanel.setLayout(new GridLayout(1, 2));
 
@@ -51,6 +61,7 @@ public class PortfolioWindow extends BaseWindow {
         JPanel rechts = new JPanel();
 
         links.setLayout(new GridLayout(2,1));
+        // Platzhalter
         rechts.setLayout(new BorderLayout());
 
         sumTitle = new JLabel("Gesamtinvestition:");
@@ -59,19 +70,21 @@ public class PortfolioWindow extends BaseWindow {
         totalSum.setText(DBConnection.getInstance().getTotalInvestment());
         totalSum.setFont(Constants.MIDDLEFONT);
 
+<<<<<<< HEAD
         // hinter der Zahl ein euro
 
         profitNonprofit = new JLabel("^ 50€ / 2%           ");
         profitNonprofit.setFont(Constants.LARGEFONT);
 
+=======
+>>>>>>> c2963b88df891d5aa9997a382d050f473fcd4ee2
         links.add(sumTitle, 0);
         links.add(totalSum, 1);
-        rechts.add(profitNonprofit, BorderLayout.EAST);
 
         infoPanel.add(links, 0);
         infoPanel.add(rechts, 1);
 
-        container.add(infoPanel, BorderLayout.PAGE_START);
+        content.add(infoPanel, BorderLayout.PAGE_START);
 
         JPanel buttonPane = new JPanel();
         buttonPane.setLayout(new BorderLayout());
@@ -92,7 +105,19 @@ public class PortfolioWindow extends BaseWindow {
 
         buttonPane.add(investmentButton, BorderLayout.EAST);
         buttonPane.setBackground(Color.LIGHT_GRAY);
-        container.add(buttonPane, BorderLayout.SOUTH);
+        content.add(buttonPane, BorderLayout.SOUTH);
+        container.add(content, 0);
+
+        loggingOutput.setLineWrap(true);
+        loggingOutput.setForeground(Color.WHITE);
+        loggingOutput.setBackground(Color.BLACK);
+        loggingOutput.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+        loggingPane = new JScrollPane(loggingOutput);
+        loggingPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+        if (DBConnection.getInstance().isAdmin()) {
+            container.add(loggingPane, 1);
+        }
     }
 
     public AssetList getInvestedETFs() {
