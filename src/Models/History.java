@@ -7,6 +7,9 @@ import com.mysql.jdbc.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Abbildung eines Asset-Kurses.
+ */
 public class History {
 
     public static int getHistoryIdForInvestment(int investmentId) {
