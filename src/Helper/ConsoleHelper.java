@@ -20,10 +20,10 @@ public class ConsoleHelper {
     public static void printResultSet(final ResultSet resultSet) throws SQLException {
         System.out.println();
         System.out.println(resultSet.getStatement());
-        if (resultSet.getFetchSize() != 0) {
-            resultSet.beforeFirst();
-            final int columnCount = resultSet.getMetaData().getColumnCount();
-            final Table t = new Table(columnCount);
+
+        resultSet.beforeFirst();
+        final int columnCount = resultSet.getMetaData().getColumnCount();
+        final Table t = new Table(columnCount);
             for (int i = 1; i <= columnCount; i++) {
                 t.addCell(resultSet.getMetaData().getColumnName(i));
             }
@@ -34,10 +34,6 @@ public class ConsoleHelper {
                 }
             }
             System.out.println(t.render());
-        }
-        else   {
-            System.out.println("empty result set");
-        }
     }
 
     /**
