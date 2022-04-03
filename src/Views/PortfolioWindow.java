@@ -59,6 +59,8 @@ public class PortfolioWindow extends BaseWindow {
         totalSum.setText(DBConnection.getInstance().getTotalInvestment());
         totalSum.setFont(Constants.MIDDLEFONT);
 
+        // hinter der Zahl ein euro
+
         profitNonprofit = new JLabel("^ 50€ / 2%");
         profitNonprofit.setFont(Constants.LARGEFONT);
 
@@ -73,9 +75,9 @@ public class PortfolioWindow extends BaseWindow {
 
         JPanel buttonPane = new JPanel();
         buttonPane.setLayout(new BorderLayout());
-        JButton button = new JButton("+ Neues Investment"); //Hier wird ein Button erzeugt für die neue Investitionen
-        button.setFont(Constants.MIDDLEFONT);
-        button.addActionListener((e) -> {
+        JButton investmentButton = new JButton("+ Neues Investment"); //Hier wird ein Button erzeugt für die neue Investitionen
+        investmentButton.setFont(Constants.MIDDLEFONT);
+        investmentButton.addActionListener((e) -> {
             var window = new AddInvestmentWindow();
             window.showWindow("Neues Investment",750,550);
             window.addWindowListener(new WindowAdapter() {
@@ -88,7 +90,7 @@ public class PortfolioWindow extends BaseWindow {
             });
         });
 
-        buttonPane.add(button, BorderLayout.EAST);
+        buttonPane.add(investmentButton, BorderLayout.EAST);
         buttonPane.setBackground(Color.LIGHT_GRAY);
         container.add(buttonPane, BorderLayout.SOUTH);
     }
@@ -123,7 +125,7 @@ public class PortfolioWindow extends BaseWindow {
         this.getInvestedMetals().repaint();
 
         // Übersicht
-        this.totalSum.setText(DBConnection.getInstance().getTotalInvestment());
+        this.totalSum.setText("       " + DBConnection.getInstance().getTotalInvestment() + " €");
         this.totalSum.repaint();
     }
 }

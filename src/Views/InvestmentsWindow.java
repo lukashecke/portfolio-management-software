@@ -65,7 +65,7 @@ public class InvestmentsWindow extends BaseWindow {
 		assetPanel.setLayout(new GridBagLayout());
 		//assetNameField = new JTextField();
 
-		message = new JLabel("Erzeugung einer neue Anlage");
+		message = new JLabel("Editieren einer Anlage ");
 		message.setFont(new Font("Courier", Font.BOLD, 28));
 
 		placeHolder = new JLabel(" ");

@@ -22,6 +22,8 @@ public class AddInvestmentWindow extends BaseWindow {
 	private JLabel message;
 	private JLabel assetLabel;
 	private JComboBox<Asset> assetComboBox;
+	private JLabel platformLabel;
+	private JComboBox<String> platformComboBox;
 	private JLabel transactionFeeLabel;
 	private JLabel purchasePriceLabel;
 	private JLabel pricePerUnitLabel;
@@ -81,10 +83,18 @@ public class AddInvestmentWindow extends BaseWindow {
 			}
 		};
 
+		platformLabel = new JLabel("Platform");
+		platformComboBox = new JComboBox<String>();
+		platformComboBox.addItem("1111");
+		platformComboBox.addItem("2222");
+		platformComboBox.addItem("3333");
+		platformComboBox.addItem("4444");
 
 		purchasePriceLabel = new JLabel("Kaufpreis");
 		purchasePriceField = new JTextField();
 		purchasePriceField.addFocusListener(focusListener);
+
+		//Combo box für Plattform
 
 		pricePerUnitLabel = new JLabel("Preis pro Einheit");
 		pricePerUnitField = new JTextField();
@@ -108,6 +118,7 @@ public class AddInvestmentWindow extends BaseWindow {
 
 
 		submitButton = new JButton("SPEICHERN");
+		submitButton.setFont(Constants.SMALLFONT);
 		submitButton.addActionListener((e) -> {
 			try {
 				double purchasePrice = Double.parseDouble(purchasePriceField.getText());
@@ -155,19 +166,22 @@ public class AddInvestmentWindow extends BaseWindow {
 		assetLabel.setBounds(50, 100, 100, 30);
 		assetComboBox.setBounds(170, 100, 200, 30);
 
-		purchasePriceLabel.setBounds(50, 160, 100, 30);
-		purchasePriceField.setBounds(170, 160, 200, 30);
+		platformLabel.setBounds(50, 150, 100, 30);
+		platformComboBox.setBounds(170, 150, 200, 30);
 
-		pricePerUnitLabel.setBounds(50, 220, 200, 30);
-		pricePerUnitField.setBounds(170, 220, 200, 30);
+		purchasePriceLabel.setBounds(50, 200, 100, 30);
+		purchasePriceField.setBounds(170, 200, 200, 30);
 
-		transactionFeeLabel.setBounds(50, 280, 200, 30);
-		transactionFeeField.setBounds(170, 280, 200, 30);
+		pricePerUnitLabel.setBounds(50, 250, 200, 30);
+		pricePerUnitField.setBounds(170, 250, 200, 30);
+
+		transactionFeeLabel.setBounds(50, 300, 200, 30);
+		transactionFeeField.setBounds(170, 300, 200, 30);
 
 		dateOfPurchaseLabel.setBounds(50, 350, 200, 30);
 		datePicker.setBounds(170, 350, 200, 30);
 
-		submitButton.setBounds(250, 450, 350, 30);
+		submitButton.setBounds(250, 415, 300, 50);
 
 
 	}
@@ -175,6 +189,8 @@ public class AddInvestmentWindow extends BaseWindow {
 		container.add(message);
 		container.add(assetLabel);
 		container.add(assetComboBox);
+		container.add(platformLabel);
+		container.add(platformComboBox);
 		container.add(purchasePriceLabel);
 		container.add(purchasePriceField);
 		container.add(pricePerUnitLabel);
@@ -182,7 +198,7 @@ public class AddInvestmentWindow extends BaseWindow {
 		container.add(transactionFeeLabel);
 		container.add(transactionFeeField);
 		container.add(dateOfPurchaseLabel);
-		/*JDatePicker*/
+		//JDatePicker
 		container.add(datePicker);
 		container.add(submitButton);
 	}
