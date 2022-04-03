@@ -61,7 +61,7 @@ public class PortfolioWindow extends BaseWindow {
 
         // hinter der Zahl ein euro
 
-        profitNonprofit = new JLabel("^ 50€ / 2%");
+        profitNonprofit = new JLabel("^ 50€ / 2%           ");
         profitNonprofit.setFont(Constants.LARGEFONT);
 
         links.add(sumTitle, 0);

@@ -19,6 +19,11 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Properties;
 
+/**
+ * Erzeugung der New Investments Fenster.
+ * @author  Namandeep Singh
+ */
+
 public class AddInvestmentWindow extends BaseWindow {
 
 	private JLabel message;
@@ -43,13 +48,7 @@ public class AddInvestmentWindow extends BaseWindow {
 	public AddInvestmentWindow() {
 		super();
 		setComponents();
-	//	investmentFrame();
 	}
-
-	private void investmentFrame() {
-	//	showWindow("Neue Investition", 900, 700);
-	}
-
 
 	private void setComponents() {
 		message = new JLabel("Wählen Sie Ihre neue Investition");
@@ -166,7 +165,7 @@ public class AddInvestmentWindow extends BaseWindow {
 
 	}
 	public void setBounds() {
-		message.setBounds(50, 10, 800, 50);             //links , höhe , länge , breite
+		message.setBounds(50, 10, 800, 50);             // (vonLinksNachRechts , höhe , länge , breite)
 
 		assetLabel.setBounds(50, 100, 100, 30);
 		assetComboBox.setBounds(170, 100, 200, 30);
