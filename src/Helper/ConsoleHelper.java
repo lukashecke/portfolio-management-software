@@ -1,7 +1,9 @@
 package Helper;
 
+import Views.PortfolioWindow;
 import org.nocrala.tools.texttablefmt.Table;
 
+import java.awt.*;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -24,16 +26,32 @@ public class ConsoleHelper {
         resultSet.beforeFirst();
         final int columnCount = resultSet.getMetaData().getColumnCount();
         final Table t = new Table(columnCount);
+        for (int i = 1; i <= columnCount; i++) {
+            t.addCell(resultSet.getMetaData().getColumnName(i));
+        }
+        while (resultSet.next()) {
             for (int i = 1; i <= columnCount; i++) {
-                t.addCell(resultSet.getMetaData().getColumnName(i));
+                final Object object = resultSet.getObject(i);
+                t.addCell(object != null ? object.toString() : "NULL");
             }
-            while (resultSet.next()) {
-                for (int i = 1; i <= columnCount; i++) {
-                    final Object object = resultSet.getObject(i);
-                    t.addCell(object != null ? object.toString() : "NULL");
-                }
+        }
+        System.out.println(t.render());
+
+        PortfolioWindow portfolioWindow = null;
+        if (true) {
+            Window[] windows = Window.getWindows();
+
+            for (Window window : windows)
+                if (window.getClass() == PortfolioWindow.class)
+                    portfolioWindow = (PortfolioWindow) window;
+        }
+        if (portfolioWindow != null) {
+            if (portfolioWindow.loggingOutput != null) {
+                portfolioWindow.loggingOutput.setText(portfolioWindow.loggingOutput.getText() + "\n\n\n" + resultSet.getStatement() + "\n"+ t.render());
+                portfolioWindow.loggingOutput.revalidate();
+                portfolioWindow.loggingOutput.repaint();
             }
-            System.out.println(t.render());
+        }
     }
 
     /**
