@@ -84,7 +84,7 @@ public class PortfolioWindow extends BaseWindow {
         JButton investmentButton = new JButton("+ Neues Investment"); //Hier wird ein Button erzeugt für die neue Investitionen
         investmentButton.setFont(Constants.MIDDLEFONT);
         investmentButton.addActionListener((e) -> {
-            var window = new AddInvestmentWindow();
+            var window = new NewInvestmentWindow();
             window.showWindow("Neues Investment",750,550);
             window.addWindowListener(new WindowAdapter() {
                 @Override

@@ -1,7 +1,7 @@
 package Views;
 
 import Business.DBConnection;
-import Controllers.PortfolioController;
+import Controllers.PortfolioWindowController;
 import com.formdev.flatlaf.FlatLightLaf;
 
 import javax.swing.*;
@@ -144,8 +144,8 @@ public class LoginWindow extends BaseWindow {
             setVisible(false);
 
             PortfolioWindow portfolioWindow = new PortfolioWindow();
-            PortfolioController portfolioController = new PortfolioController(portfolioWindow);
-            portfolioController.showWindow("Portfolio",1000,800);
+            PortfolioWindowController portfolioWindowController = new PortfolioWindowController(portfolioWindow);
+            portfolioWindowController.showWindow("Portfolio",1000,800);
             dispose();
         } catch (SQLException throwables) {
             throwables.printStackTrace();

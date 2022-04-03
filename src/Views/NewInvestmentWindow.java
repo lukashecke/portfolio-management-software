@@ -24,7 +24,7 @@ import java.util.Properties;
  * @author  Namandeep Singh
  */
 
-public class AddInvestmentWindow extends BaseWindow {
+public class NewInvestmentWindow extends BaseWindow {
 
 	private JLabel message;
 	private JLabel assetLabel;
@@ -45,7 +45,7 @@ public class AddInvestmentWindow extends BaseWindow {
 	JDatePanelImpl datePanel;
 	JDatePickerImpl datePicker;
 
-	public AddInvestmentWindow() {
+	public NewInvestmentWindow() {
 		super();
 		setComponents();
 	}

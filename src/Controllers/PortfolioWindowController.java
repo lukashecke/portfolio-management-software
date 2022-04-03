@@ -8,13 +8,13 @@ import java.util.ArrayList;
 /**
  * Controller für das ProtfolioWindow.
  */
-public class PortfolioController {
+public class PortfolioWindowController {
     // View
     private PortfolioWindow view;
     // Model
     private ArrayList<Asset> assetTypes;
 
-    public PortfolioController(PortfolioWindow portfolioWindow) {
+    public PortfolioWindowController(PortfolioWindow portfolioWindow) {
         this.view = portfolioWindow;
         assetTypes = Asset.getAssets();
         this.view.refresh(assetTypes);

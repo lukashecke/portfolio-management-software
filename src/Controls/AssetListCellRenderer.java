@@ -1,11 +1,15 @@
-package Views;
+package Controls;
 
 import Models.Asset;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class AssetCellRenderer implements ListCellRenderer<Asset> {
+/**
+ * Zellenansicht, die sowohl den Namen, als auch die Gesamtinvestition eines Assets für die dazugehörige Listensicht anzeigt.
+ * @author Lukas Hecke
+ */
+public class AssetListCellRenderer implements ListCellRenderer<Asset> {
     @Override
     public Component getListCellRendererComponent(JList<? extends Asset> list, Asset value, int index, boolean isSelected, boolean cellHasFocus) {
         JPanel panel = new JPanel();
