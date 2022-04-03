@@ -3,6 +3,7 @@ package Views;
 import Business.DBConnection;
 import Formatter.DateLabelFormatter;
 import Models.Asset;
+import Models.Platform;
 import Utils.Constants;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
@@ -14,6 +15,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Properties;
 
@@ -23,7 +25,7 @@ public class AddInvestmentWindow extends BaseWindow {
 	private JLabel assetLabel;
 	private JComboBox<Asset> assetComboBox;
 	private JLabel platformLabel;
-	private JComboBox<String> platformComboBox;
+	private JComboBox<Platform> platformComboBox;
 	private JLabel transactionFeeLabel;
 	private JLabel purchasePriceLabel;
 	private JLabel pricePerUnitLabel;
@@ -84,11 +86,12 @@ public class AddInvestmentWindow extends BaseWindow {
 		};
 
 		platformLabel = new JLabel("Platform");
-		platformComboBox = new JComboBox<String>();
-		platformComboBox.addItem("1111");
-		platformComboBox.addItem("2222");
-		platformComboBox.addItem("3333");
-		platformComboBox.addItem("4444");
+		var platforms = Platform.GetPlatforms();
+
+		platformComboBox = new JComboBox<Platform>();
+		for (Platform platform:platforms) {
+			platformComboBox.addItem(platform);
+		}
 
 		purchasePriceLabel = new JLabel("Kaufpreis");
 		purchasePriceField = new JTextField();
@@ -107,13 +110,17 @@ public class AddInvestmentWindow extends BaseWindow {
 		dateOfPurchaseLabel = new JLabel("Kaufdatum");
 
 		UtilDateModel model = new UtilDateModel();
-		model.setDate(2022, 01, 31);
+		var now = LocalDateTime.now();
+		model.setDate(now.getYear(), now.getMonthValue(), now.getDayOfMonth());
 		model.setSelected(true);
 		Properties p = new Properties();
-		p.put("text.today", "Today");
-		p.put("text.month", "Month");
-		p.put("text.year", "Year");
+		p.put("text.today", "Heute");
+		p.put("text.month", "Monat");
+		p.put("text.year", "Jahr");
+
 		datePanel = new JDatePanelImpl(model, p);
+		datePanel.getModel().setDate(now.getYear(),now.getMonthValue(),now.getDayOfMonth());
+		datePanel.getModel().setSelected(true);
 		datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
 
 
@@ -126,14 +133,12 @@ public class AddInvestmentWindow extends BaseWindow {
 				double transactionFee = Double.parseDouble(transactionFeeField.getText());
 
 				Asset selectedAsset = (Asset)assetComboBox.getSelectedItem();
+				Platform selectedPlatform = (Platform)platformComboBox.getSelectedItem();
 				Date selectedDate = (Date)datePicker.getModel().getValue();
 				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 				String formattedDateText = formatter.format(selectedDate);
 
-				// todo: platform muss in maske übergeben werden
-				int platformId = 1;
-
-				DBConnection.getInstance().createNewInvestment(selectedAsset, platformId, "\""+formattedDateText+"\"", pricePerUnit, purchasePrice, transactionFee);
+				DBConnection.getInstance().createNewInvestment(selectedAsset, selectedPlatform, "\""+formattedDateText+"\"", pricePerUnit, purchasePrice, transactionFee);
 
 				JOptionPane.showMessageDialog(container, "Neues Investment erfolgreich gespeichert", "Anlegen erfolgreich", JOptionPane.INFORMATION_MESSAGE);
 				// this.exit();

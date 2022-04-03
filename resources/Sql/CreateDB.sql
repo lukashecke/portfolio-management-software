@@ -449,3 +449,17 @@ BEGIN
 END //
 
 DELIMITER ;
+
+-- -----------------------------------------------------
+-- Platform
+-- -----------------------------------------------------
+
+DELIMITER //
+
+CREATE PROCEDURE GetPlatforms()
+BEGIN
+	SELECT *
+    FROM platform;
+END //
+
+DELIMITER ;

@@ -3,6 +3,7 @@ package Business;
 import Helper.ConsoleHelper;
 import Models.Asset;
 import Models.AssetType;
+import Models.Platform;
 import com.mysql.jdbc.CallableStatement;
 
 import java.io.FileReader;
@@ -256,8 +257,8 @@ public class DBConnection {
         return assets;
     }
 
-    public void createNewInvestment(Asset selectedAsset, int platformId, String selectedDate, double pricePerUnit, double purchasePrice, double transactionFee) throws SQLException {
-        String SQL = "{call CreateNewInvestment(1, "+ selectedAsset.getId() +", "+platformId+", "+ selectedDate +", "+pricePerUnit+", "+purchasePrice+", "+transactionFee+")}";
+    public void createNewInvestment(Asset asset, Platform platform, String selectedDate, double pricePerUnit, double purchasePrice, double transactionFee) throws SQLException {
+        String SQL = "{call CreateNewInvestment(1, "+ asset.getId() +", "+platform.getId()+", "+ selectedDate +", "+pricePerUnit+", "+purchasePrice+", "+transactionFee+")}";
         CallableStatement callableStatement = (CallableStatement) DBConnection.getInstance().connection.prepareCall(SQL);
         callableStatement.executeQuery();
         ResultSet rs = callableStatement.getResultSet();
