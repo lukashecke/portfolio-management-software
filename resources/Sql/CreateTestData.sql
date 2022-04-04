@@ -183,4 +183,5 @@ GRANT EXECUTE ON PROCEDURE gruppeZ.GetInvestedSumForAsset TO 'gruppeZuser'@'loca
 GRANT EXECUTE ON PROCEDURE gruppeZ.GetAssetInvestmentsPresentation TO 'gruppeZuser'@'localhost';
 GRANT EXECUTE ON PROCEDURE gruppeZ.GetAssets TO 'gruppeZuser'@'localhost';
 GRANT EXECUTE ON PROCEDURE gruppeZ.CreateNewInvestment TO 'gruppeZuser'@'localhost';
+GRANT EXECUTE ON PROCEDURE gruppeZ.GetPlatforms TO 'gruppeZuser'@'localhost';
 FLUSH PRIVILEGES;
