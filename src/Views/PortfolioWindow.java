@@ -29,6 +29,7 @@ public class PortfolioWindow extends BaseWindow {
     private AssetList investedETFs = new AssetList();
     private AssetList investedCrypto = new AssetList();
     private AssetList investedMetals = new AssetList();
+    private AssetList investedShares = new AssetList();
 
     /**
      * Erzeugt die Komponenten für das InvestmentWindow.
@@ -50,6 +51,7 @@ public class PortfolioWindow extends BaseWindow {
         content = new JPanel();
         content.setLayout(new BorderLayout());
 
+        tabbedPane.addTab("Einzelaktien", investedShares);
         tabbedPane.addTab("ETFs", investedETFs);
         tabbedPane.addTab("Krypto", investedCrypto);
         tabbedPane.addTab("Edelmetalle", investedMetals);
@@ -125,6 +127,10 @@ public class PortfolioWindow extends BaseWindow {
         return investedMetals;
     }
 
+    public AssetList getInvestedShares() {
+        return investedShares;
+    }
+
     public void refresh(Collection<? extends Asset> investedAssets) {
         // Tabs
         DefaultListModel<Asset> etfListModel = new DefaultListModel<>();
@@ -141,6 +147,11 @@ public class PortfolioWindow extends BaseWindow {
         metalLstModel.addAll(investedAssets.stream().filter(t -> t.getType().getId() == 3).collect(toList()));
         this.getInvestedMetals().setModel(metalLstModel);
         this.getInvestedMetals().repaint();
+
+        DefaultListModel<Asset> sharesListModel = new DefaultListModel<>();
+        sharesListModel.addAll(investedAssets.stream().filter(t -> t.getType().getId() == 4).collect(toList()));
+        this.getInvestedShares().setModel(sharesListModel);
+        this.getInvestedShares().repaint();
 
         // Übersicht
         this.totalSum.setText("       " + Investment.getTotalInvestment() + " €");
